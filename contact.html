@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vitro Media Lab — Design by Choice</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Semantic UI CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+<!-- FontAwesome Icons (Semantic UI uses FontAwesome internally often, but we'll keep this for specific versions) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<style>
+  :root{
+    /* RAW PALETTE */
+    --bg: #050505;
+    --surface: rgba(255, 255, 255, 0.03);
+    --white: #ffffff;
+    --dim: rgba(255, 255, 255, 0.4);
+    --border: rgba(255, 255, 255, 0.15);
+
+        /* YOUR PALETTE */
+    --navy: #2D364D;
+    --blush: #F2D4CA;
+    --orange: #D37250;
+    --green: #5F9857;
+    --olive: #696954;
+    --grey: #3E3E3E;
+    --black: #0F1219; /* Slightly darker than Navy for contrast */
+    
+    --text-main: var(--white);
+    --text-muted: var(--dim);
+  }
+  
+  html { scroll-behavior: smooth; }
+
+  body{
+    font-family: 'Inter', sans-serif;
+    font-size: 17px; 
+    background: var(--navy);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* MATH PIXEL GRID */
+  .math-grid {
+    position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    perspective: 1000px;
+    overflow: hidden;
+  }
+  .math-grid::before {
+    content: ''; position: absolute; inset: -100%;
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    /* transform: rotateX(85deg); */
+    opacity: 0.25;
+    mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
+    -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
+  }
+
+  h1, h2, h3, .h1, .h2, .h3, .ui.header { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin: 0; line-height: 1.0; letter-spacing: -0.04em; text-transform: uppercase; color: var(--white); }
+  a { text-decoration: none; color: inherit; transition: 0.3s; }
+  a:hover { color: var(--white); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+
+  /* GLASS HEADER */
+  .site-header{
+    position:fixed; top:20px; left:50%; transform: translateX(-50%);
+    width: calc(100% - 40px); max-width: 1360px;
+    z-index:100;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    
+    /* The Glass Effect */
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    /* border: 1px solid var(--navy); */
+    border-radius: 4px;
+  }
+  
+  .brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.05em; display:flex; gap:10px; align-items:center; }
+  .brand-dot { width: 6px; height: 6px; background: var(--orange); }
+
+  .nav-link-custom { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); opacity: 0.7; margin-left: 24px; }
+  .nav-link-custom:hover { opacity: 1; color: var(--white); }
+
+  /* HERO */
+  .hero{
+    min-height: 95vh;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+    z-index: 1;
+    padding-top: 120px;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .hero-statement {
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    letter-spacing: -0.03em;
+    /* mix-blend-mode: hard-light; */
+  }
+
+  /* ROTATOR STYLES */
+  .rotator-wrapper {
+    display: inline-flex; flex-direction: column;
+    color: var(--dim); font-style: normal; text-decoration: line-through;
+  }
+  .rotating-word { display: block; transform-origin: left; }
+  
+  /* ANIMATIONS */
+  .slide-out { animation: slideOut .5s cubic-bezier(0.8, 0, 0.2, 1) forwards; }
+  .slide-in { animation: slideIn .7s cubic-bezier(0.8, 0, 0.2, 1) forwards; }
+  @keyframes slideOut { to { transform: translateY(-100%) skewY(5deg); opacity: 0; } }
+  @keyframes slideIn { from { transform: translateY(100%) skewY(5deg); opacity: 0; } to { transform: translateY(0) skewY(0deg); opacity: 1; } }
+
+  .hero-sub {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 1.3rem; color: var(--text-muted);
+    display: flex; gap: 20px; align-items: center; /* Semantic UI doesn't have direct gap utility */
+    font-family: 'Space Grotesk', monospace;
+  }
+  .hero-line { height: 1px; width: 60px; background: var(--orange); }
+
+  /* MOTION REVEAL */
+  .reveal { opacity: 0; clip-path: inset(100% 0 0 0); transition: all 1s cubic-bezier(0.1, 0.9, 0.2, 1); }
+  .reveal.active { opacity: 1; clip-path: inset(0 0 0 0); }
+  .reveal.active.stagger-1 { transition-delay: 0.1s; }
+  .reveal.active.stagger-2 { transition-delay: 0.2s; }
+  .reveal.active.stagger-3 { transition-delay: 0.3s; }
+  .reveal.active.stagger-4 { transition-delay: 0.4s; }
+  .reveal.active.stagger-5 { transition-delay: 0.5s; }
+  .reveal.active.stagger-6 { transition-delay: 0.6s; }
+  
+  /* TECHNICAL LABELS */
+  .tech-label {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 14px; letter-spacing: 0.1em; color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 10px; display: block;
+  }
+  .tech-label::before { content: '['; margin-right: 5px; color: var(--border); }
+  .tech-label::after { content: ']'; margin-left: 5px; color: var(--border); }
+
+  /* HORIZONTAL SCROLL SECTION */
+  .scroll-section {
+    padding: 100px 0;
+    overflow-x: hidden;
+    position: relative; z-index: 2;
+    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+ .scroll-section-no-gradiant {
+    padding: 100px 0;
+    overflow-x: hidden;
+    position: relative; z-index: 2;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scroll-track {
+    display: flex; gap: 24px; padding-left: 40px; padding-right: 40px;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+  }
+  .scroll-track::-webkit-scrollbar { display: none; } /* Chrome */
+
+  .project-card {
+    flex: 0 0 35vw; min-width: 400px;
+    aspect-ratio: 16/10;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s;
+  }
+  .project-card:hover { transform: scale(1.02); z-index: 5; border-color: var(--white); }
+  .project-card img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.5s; object-position: top; }
+  .project-card:hover img { filter: grayscale(0%); }
+  
+  .card-meta {
+    position: absolute; top: 20px; left: 20px;
+    background: var(--bg);
+    padding: 5px 10px; border: 1px solid var(--border);
+    font-family: 'Space Grotesk', monospace;
+    font-size: 13px; font-weight: 500; text-transform: uppercase;
+  }
+
+  /* LIST LAYOUT */
+  .section{
+    padding: 100px 0; position: relative; z-index: 2;
+    border-top: 1px solid var(--border);
+  }
+  .services { padding: 100px 0; position: relative; z-index: 2; }
+  .service-row {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    transition: opacity 1s cubic-bezier(0.1, 0.9, 0.2, 1), clip-path 1s cubic-bezier(0.1, 0.9, 0.2, 1);
+    position: relative;
+  }
+  .service-row:hover { background-color: rgba(255, 255, 255, 0.03); }
+  .service-row::before {
+    content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 1px; background: var(--white);
+    transform: scaleY(0); transition: transform 0.3s; transform-origin: top;
+  }
+  .service-row:hover::before { transform: scaleY(1); }
+  
+  .service-row h3 { font-size: 2.5rem; color: var(--text-main); }
+  .service-row p { font-size: 1.2rem; color: var(--text-muted); }
+  .service-icon { font-size: 1.5rem; color: var(--white); opacity: 0.5; margin-right: 1.5rem; }
+
+  /* FOOTER */
+  footer {
+    padding: 100px 0 60px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted); font-size: 15px;
+  }
+  .social-link { color: var(--text-muted); font-size: 1.2rem; transition: 0.3s; }
+  .social-link:hover { color: var(--white); }
+
+  @media(max-width: 768px) {
+    .hero-statement { font-size: 3rem; }
+    .project-card { flex: 0 0 85vw; min-width: auto; }
+    .service-row h3 { font-size: 2rem; }
+    .nav-link-custom { margin-left: 12px; font-size: 11px; }
+    .reveal { opacity: 1 !important; clip-path: inset(0 0 0 0) !important; }
+    .services { padding: 60px 0; }
+    .service-row { padding: 25px 0; }
+  }
+
+  /* CONTACT FORM STYLES */
+  .ui.form.inverted .field > label { color: var(--dim); font-family: 'Space Grotesk', monospace; font-weight: normal; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .ui.form.inverted input, .ui.form.inverted textarea, .ui.form.inverted select {
+    background: var(--surface) !important; border: 1px solid var(--border) !important; color: var(--white) !important; border-radius: 0 !important; font-family: 'Inter', sans-serif;
+  }
+  .ui.form.inverted input:focus, .ui.form.inverted textarea:focus, .ui.form.inverted select:focus {
+    border-color: var(--white) !important; background: rgba(255,255,255,0.05) !important;
+  }
+  .ui.selection.dropdown { background: var(--surface); border: 1px solid var(--border); color: var(--white); border-radius: 0; }
+</style>
+</head>
+<body>
+  <div class="math-grid"></div>
+  
+  <header class="site-header ui secondary">
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <a href="/">VITRO MEDIA LAB</a>
+    </div>
+    <nav class="d-flex">
+      <a href="#" class="nav-link-custom">Projects</a>
+      <a href="#" class="nav-link-custom">Expertise</a>
+      <a href="/contact.html" class="nav-link-custom">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="ui container">
+      <div class="hero-statement">
+        <span class="reveal stagger-1">Let's start</span><br>
+        <span class="reveal stagger-2">a conversation.</span>
+      </div>
+      
+      <div class="hero-sub reveal stagger-3">
+        <div class="hero-line"></div>
+        <span>Inquire about services, pricing, or collaboration.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="ui container">
+      <span class="tech-label reveal stagger-1">Fig 1.0 — Inquiry</span>
+      <div class="ui grid stackable reveal stagger-2" style="margin-top: 20px;">
+        <div class="six wide column">
+          <h3 style="font-size: 1.5rem; color: var(--white); margin-bottom: 1rem;">Contact Info</h3>
+          <p style="color: var(--text-muted); margin-bottom: 2rem;">
+            Have a question or want to work together? Fill out the form and we'll get back to you as soon as possible.
+          </p>
+          
+          <div style="margin-bottom: 1.5rem;">
+            <div class="tech-label" style="margin-bottom: 5px;">Email</div>
+            <a href="mailto:hello@vitromedialab.com" style="font-size: 1.1rem; color: var(--white);">hello@vitromedialab.com</a>
+          </div>
+        </div>
+        
+        <div class="ten wide column">
+          <form class="ui form inverted" id="contact-form">
+            <div class="two fields">
+              <div class="field">
+                <label>Name</label>
+                <input type="text" name="name" placeholder="Name" required>
+              </div>
+              <div class="field">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="Email" required>
+              </div>
+            </div>
+            <div class="field">
+              <label>Service Interested In</label>
+              <select class="ui dropdown" name="service">
+                <option value="">Select a Service</option>
+                <option value="web">Web Development</option>
+                <option value="photo">Photography</option>
+                <option value="video">Videography</option>
+                <option value="design">Graphic Design</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Project Details</label>
+              <textarea name="message" rows="5" placeholder="Tell us about your project goals and timeline..."></textarea>
+            </div>
+            <button class="ui button inverted basic" type="submit" style="border-radius: 0; margin-top: 10px; width: 100%;">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ui container">
+      <div class="ui grid stackable mb-5 reveal stagger-1">
+        <div class="twelve wide column">
+          <span class="tech-label reveal stagger-2">Fig 2.0 — Contact</span>
+          <h2 class="reveal stagger-3" style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital legacy.</h2>
+        </div>
+        <div class="four wide column right aligned middle aligned">
+          <a href="#" class="ui button inverted basic reveal stagger-4" style="font-weight: 600; border-radius: 0;">Start a Project</a>
+        </div>
+      </div>
+      
+      <div class="ui grid stackable align-items-center pt-4" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="eight wide column mb-3 mb-md-0">
+          © <script>document.write(new Date().getFullYear())</script> Vitro Media Lab
+        </div>
+        <div class="eight wide column right aligned">
+          <a href="#" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-linkedin"></i></a>
+          <a href="#" class="social-link" style="margin-left: 1.5rem;"><i class="fas fa-envelope"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* SCROLL REVEAL ENGINE */
+    const observerOptions = { threshold: 0, rootMargin: "0px" };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+      });
+    }, observerOptions);
+    document.querySelectorAll('.reveal').forEach(el => {
+      // Only observe if it's not already active (e.g., hero elements might be visible on load)
+      if (!el.classList.contains('active')) {
+        observer.observe(el);
+      }
+    });
+
+    /* GOOGLE APPS SCRIPT FORM SUBMISSION */
+    const contactForm = document.getElementById("contact-form");
+    
+    // TODO: Paste your Google Apps Script Web App URL here
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3qUOF8QvclxicMseNG1nao9rRRMIf8EgQGTC7lbhqSaDVoojl2Szk2-45vk54fWEK0g/exec";
+
+    if (contactForm) {
+      contactForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const btn = contactForm.querySelector("button[type='submit']");
+        const originalText = btn.innerText;
+        
+        // Set loading state
+        btn.classList.add("loading");
+        btn.disabled = true;
+
+        // Convert FormData to URLSearchParams for reliable GAS handling
+        const data = new URLSearchParams(new FormData(contactForm));
+
+        // mode: 'no-cors' is required because Google Apps Script redirects the response,
+        // which browsers often block as a CORS violation.
+        fetch(SCRIPT_URL, { method: "POST", body: data, mode: 'no-cors' })
+          .then(response => {
+            // With 'no-cors', we get an opaque response (status 0). We assume success.
+            btn.classList.remove("loading");
+            btn.innerText = "Message Sent!";
+            btn.classList.remove("basic"); // Solid button for success
+            contactForm.reset();
+          })
+          .catch(error => {
+            console.error('Error!', error.message);
+            btn.classList.remove("loading");
+            alert("Error sending message. Please email us directly.");
+            btn.innerText = originalText;
+            btn.disabled = false;
+          });
+      });
+    }
+  </script>
+
+</body>
+</html>
