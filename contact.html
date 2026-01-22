@@ -231,16 +231,6 @@
     .services { padding: 60px 0; }
     .service-row { padding: 25px 0; }
   }
-
-  /* CONTACT FORM STYLES */
-  .ui.form.inverted .field > label { color: var(--dim); font-family: 'Space Grotesk', monospace; font-weight: normal; letter-spacing: 0.05em; margin-bottom: 8px; }
-  .ui.form.inverted input, .ui.form.inverted textarea, .ui.form.inverted select {
-    background: var(--surface) !important; border: 1px solid var(--border) !important; color: var(--white) !important; border-radius: 0 !important; font-family: 'Inter', sans-serif;
-  }
-  .ui.form.inverted input:focus, .ui.form.inverted textarea:focus, .ui.form.inverted select:focus {
-    border-color: var(--white) !important; background: rgba(255,255,255,0.05) !important;
-  }
-  .ui.selection.dropdown { background: var(--surface); border: 1px solid var(--border); color: var(--white); border-radius: 0; }
 </style>
 </head>
 <body>
@@ -252,8 +242,6 @@
       <a href="/">VITRO MEDIA LAB</a>
     </div>
     <nav class="d-flex">
-      <a href="#" class="nav-link-custom">Projects</a>
-      <a href="#" class="nav-link-custom">Expertise</a>
       <a href="/contact.html" class="nav-link-custom">Contact</a>
     </nav>
   </header>
@@ -261,62 +249,133 @@
   <section class="hero">
     <div class="ui container">
       <div class="hero-statement">
-        <span class="reveal stagger-1">Let's start</span><br>
-        <span class="reveal stagger-2">a conversation.</span>
+        <span class="reveal stagger-1">All <span class="rotator-wrapper"><span id="rotating-text" class="rotating-word">websites</span></span></span><br>
+        <span class="reveal stagger-2">shouldn't look the same.</span>
       </div>
       
       <div class="hero-sub reveal stagger-3">
         <div class="hero-line"></div>
-        <span>Inquire about services, pricing, or collaboration.</span>
+        <span>Digital architecture for brands requiring distinctiveness.</span>
       </div>
     </div>
   </section>
 
   <section class="section">
-    <div class="ui container">
-      <span class="tech-label reveal stagger-1">Fig 1.0 — Inquiry</span>
-      <div class="ui grid stackable reveal stagger-2" style="margin-top: 20px;">
-        <div class="six wide column">
-          <h3 style="font-size: 1.5rem; color: var(--white); margin-bottom: 1rem;">Contact Info</h3>
-          <p style="color: var(--text-muted); margin-bottom: 2rem;">
-            Have a question or want to work together? Fill out the form and we'll get back to you as soon as possible.
-          </p>
-          
-          <div style="margin-bottom: 1.5rem;">
-            <div class="tech-label" style="margin-bottom: 5px;">Email</div>
-            <a href="mailto:hello@vitromedialab.com" style="font-size: 1.1rem; color: var(--white);">hello@vitromedialab.com</a>
-          </div>
+    <div class="ui container" style="margin-bottom: 2.5rem;">
+      <span class="tech-label reveal stagger-1">Fig 1.0 — Introduction</span>
+      <div class="ui grid stackable middle aligned reveal stagger-2">
+        <div class="eight wide column">
+          <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Vitro Media Lab</h2>
         </div>
-        
-        <div class="ten wide column">
-          <form class="ui form inverted" id="contact-form">
-            <div class="two fields">
-              <div class="field">
-                <label>Name</label>
-                <input type="text" name="name" placeholder="Name" required>
-              </div>
-              <div class="field">
-                <label>Email</label>
-                <input type="email" name="email" placeholder="Email" required>
-              </div>
-            </div>
-            <div class="field">
-              <label>Service Interested In</label>
-              <select class="ui dropdown" name="service">
-                <option value="">Select a Service</option>
-                <option value="web">Web Development</option>
-                <option value="photo">Photography</option>
-                <option value="video">Videography</option>
-                <option value="design">Graphic Design</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>Project Details</label>
-              <textarea name="message" rows="5" placeholder="Tell us about your project goals and timeline..."></textarea>
-            </div>
-            <button class="ui button inverted basic" type="submit" style="border-radius: 0; margin-top: 10px; width: 100%;">Send Message</button>
-          </form>
+      </div>
+      <p class="reveal stagger-3">Vitro Media Lab is a multidisciplinary creative studio based in Lafayette, Indiana. We bridge the gap between technical logic and visual artistry, crafting distinct digital identities for local partners and global visionaries.</p>
+    </div>
+  </section>
+
+  <section class="scroll-section">
+    <div class="ui container" style="margin-bottom: 2.5rem;">
+      <span class="tech-label reveal stagger-1">Fig 2.0 — Selected Works</span>
+      <div class="ui grid stackable middle aligned reveal stagger-2">
+        <div class="eight wide column">
+          <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Web Development</h2>
+        </div>
+        <div class="eight wide column right aligned">
+          <a href="#" class="mt-2 mt-md-0" style="font-size: 14px; color: var(--white);">View All <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-track">
+      <div class="project-card">
+        <img src="images/Gibson.png" alt="Work">
+        <div class="card-meta">Gibson Wells Audio</div>
+      </div>
+      <div class="project-card">
+        <img src="images/MyoFlow.png" alt="Work">
+        <div class="card-meta">MyoFlow Massage</div>
+      </div>
+      <div class="project-card">
+        <img src="images/Coffee.png" alt="Work">
+        <div class="card-meta">Ghost Coffee Roaster</div>
+      </div>
+       <div class="project-card">
+        <img src="images/Plumbing.png" alt="Work">
+        <div class="card-meta">Big Dog Plumbing</div>
+      </div>
+    </div>
+  </section>
+
+    <section class="scroll-section-no-gradiant">
+    <div class="ui container" style="margin-bottom: 2.5rem;">
+      <span class="tech-label reveal stagger-1">Fig 3.0 — Visuals</span>
+      <div class="ui grid stackable middle aligned reveal stagger-2">
+        <div class="eight wide column">
+          <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Photography</h2>
+        </div>
+        <div class="eight wide column right aligned">
+          <a href="#" class="mt-2 mt-md-0" style="font-size: 14px; color: var(--white);">View All <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-track">
+      <div class="project-card">
+        <img src="images/DSC9206_01.jpg" alt="Work">
+        <div class="card-meta">Event Photography</div>
+      </div>
+      <div class="project-card">
+        <img src="images/DSC9695.jpg" alt="Work">
+        <div class="card-meta">Product Photography</div>
+      </div>
+      <div class="project-card">
+        <img src="images/DSC05960.jpg" alt="Work">
+        <div class="card-meta">Wedding Photography</div>
+      </div>
+       <div class="project-card">
+        <img src="images/DSC_0463_01.jpg" alt="Work">
+        <div class="card-meta">Portraits</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services">
+    <div class="ui container">
+      <div style="margin-bottom: 4rem;">
+        <span class="tech-label reveal stagger-1">Fig 4.0 — Capabilities</span>
+        <h2 class="reveal stagger-2" style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Our Expertise</h2>
+      </div>
+      
+      <div class="ui middle aligned grid stackable service-row reveal stagger-3">
+        <div class="five wide column">
+          <h3 class="ui header"><i class="fas fa-code service-icon"></i>Web Development</h3>
+        </div>
+        <div class="eleven wide column">
+          <p>From custom front-end designs to robust back-end systems, we build dynamic and responsive web experiences tailored to your needs.</p>
+        </div>
+      </div>
+      
+      <div class="ui middle aligned grid stackable service-row reveal stagger-4">
+        <div class="five wide column">
+          <h3 class="ui header"><i class="fas fa-camera service-icon"></i>Photography</h3>
+        </div>
+        <div class="eleven wide column">
+          <p>Capturing life's most precious moments, from stunning wedding and portrait photography to dynamic event coverage.</p>
+        </div>
+      </div>
+      
+      <div class="ui middle aligned grid stackable service-row reveal stagger-5">
+        <div class="five wide column">
+          <h3 class="ui header"><i class="fas fa-video service-icon"></i>Videography</h3>
+        </div>
+        <div class="eleven wide column">
+          <p>Bringing your stories to life with compelling visual narratives, from concept development to final production.</p>
+        </div>
+      </div>
+      
+      <div class="ui middle aligned grid stackable service-row reveal stagger-6">
+        <div class="five wide column">
+          <h3 class="ui header"><i class="fas fa-pen-nib service-icon"></i>Graphic Design</h3>
+        </div>
+        <div class="eleven wide column">
+          <p>Crafting impactful visual identities, logos, and marketing materials that resonate with your audience and elevate your brand.</p>
         </div>
       </div>
     </div>
@@ -325,16 +384,16 @@
   <footer>
     <div class="ui container">
       <div class="ui grid stackable mb-5 reveal stagger-1">
-        <div class="twelve wide column">
-          <span class="tech-label reveal stagger-2">Fig 2.0 — Contact</span>
-          <h2 class="reveal stagger-3" style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital legacy.</h2>
+        <div class="twelve wide column reveal stagger-2">
+          <span class="tech-label">Fig 5.0 — Contact</span>
+          <h2 class="" style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital legacy.</h2>
         </div>
         <div class="four wide column right aligned middle aligned">
-          <a href="#" class="ui button inverted basic reveal stagger-4" style="font-weight: 600; border-radius: 0;">Start a Project</a>
+          <a href="/contact.html" class="ui button inverted basic" style="font-weight: 600; border-radius: 0;">Start a Project</a>
         </div>
       </div>
       
-      <div class="ui grid stackable align-items-center pt-4" style="border-top: 1px solid rgba(255,255,255,0.1);">
+      <div class="ui grid align-items-center pt-4" style="border-top: 1px solid rgba(255,255,255,0.1);">
         <div class="eight wide column mb-3 mb-md-0">
           © <script>document.write(new Date().getFullYear())</script> Vitro Media Lab
         </div>
@@ -348,6 +407,23 @@
   </footer>
 
   <script>
+    /* ROTATING TEXT ENGINE */
+    const words = ["websites", "photos", "artwork", "videos", "graphics"];
+    let currentIndex = 0;
+    const textElement = document.getElementById("rotating-text");
+
+    function rotateWord() {
+      textElement.classList.remove("slide-in");
+      textElement.classList.add("slide-out");
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % words.length;
+        textElement.innerText = words[currentIndex];
+        textElement.classList.remove("slide-out");
+        textElement.classList.add("slide-in");
+      }, 600);
+    }
+    setInterval(rotateWord, 3000);
+
     /* SCROLL REVEAL ENGINE */
     const observerOptions = { threshold: 0, rootMargin: "0px" };
     const observer = new IntersectionObserver((entries) => {
@@ -361,45 +437,6 @@
         observer.observe(el);
       }
     });
-
-    /* GOOGLE APPS SCRIPT FORM SUBMISSION */
-    const contactForm = document.getElementById("contact-form");
-    
-    // TODO: Paste your Google Apps Script Web App URL here
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3qUOF8QvclxicMseNG1nao9rRRMIf8EgQGTC7lbhqSaDVoojl2Szk2-45vk54fWEK0g/exec";
-
-    if (contactForm) {
-      contactForm.addEventListener("submit", function(e) {
-        e.preventDefault();
-        const btn = contactForm.querySelector("button[type='submit']");
-        const originalText = btn.innerText;
-        
-        // Set loading state
-        btn.classList.add("loading");
-        btn.disabled = true;
-
-        // Convert FormData to URLSearchParams for reliable GAS handling
-        const data = new URLSearchParams(new FormData(contactForm));
-
-        // mode: 'no-cors' is required because Google Apps Script redirects the response,
-        // which browsers often block as a CORS violation.
-        fetch(SCRIPT_URL, { method: "POST", body: data, mode: 'no-cors' })
-          .then(response => {
-            // With 'no-cors', we get an opaque response (status 0). We assume success.
-            btn.classList.remove("loading");
-            btn.innerText = "Message Sent!";
-            btn.classList.remove("basic"); // Solid button for success
-            contactForm.reset();
-          })
-          .catch(error => {
-            console.error('Error!', error.message);
-            btn.classList.remove("loading");
-            alert("Error sending message. Please email us directly.");
-            btn.innerText = originalText;
-            btn.disabled = false;
-          });
-      });
-    }
   </script>
 
 </body>
