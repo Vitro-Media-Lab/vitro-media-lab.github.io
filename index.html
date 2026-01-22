@@ -227,6 +227,7 @@
     .project-card { flex: 0 0 85vw; min-width: auto; }
     .service-row h3 { font-size: 2rem; }
     .nav-link-custom { margin-left: 12px; font-size: 11px; }
+    .reveal { opacity: 1 !important; clip-path: inset(0 0 0 0) !important; }
   }
 </style>
 </head>
@@ -405,10 +406,6 @@
     </div>
   </footer>
 
-  <!-- jQuery and Semantic UI JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
-
   <script>
     /* ROTATING TEXT ENGINE */
     const words = ["websites", "photos", "artwork", "videos", "graphics"];
@@ -428,7 +425,7 @@
     setInterval(rotateWord, 3000);
 
     /* SCROLL REVEAL ENGINE */
-    const observerOptions = { threshold: 0.1, rootMargin: "0px" };
+    const observerOptions = { threshold: 0, rootMargin: "0px" };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('active');
