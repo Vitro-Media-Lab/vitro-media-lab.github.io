@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vitro Media Lab — Design by Choice</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Josefin+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<style>
+  :root{
+    /* RAW PALETTE */
+    --bg: #050505;
+    --surface: rgba(255, 255, 255, 0.03);
+    --white: #ffffff;
+    --dim: rgba(255, 255, 255, 0.4);
+    --border: rgba(255, 255, 255, 0.15);
+
+    /* YOUR PALETTE */
+    --navy: #2D364D;
+    --blush: #F2D4CA;
+    --orange: #D37250;
+    --green: #5F9857;
+    --olive: #696954;
+    --grey: #3E3E3E;
+    --black: #0F1219; 
+    
+    --text-main: var(--white);
+    --text-muted: var(--dim);
+  }
+  
+  html { scroll-behavior: smooth; }
+
+  body{
+    font-family: 'Inter', sans-serif;
+    font-size: 17px; 
+    background: var(--navy);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* MATH PIXEL GRID */
+  .math-grid {
+    position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    overflow: hidden;
+  }
+  .math-grid::before {
+    content: ''; position: absolute; inset: -100%;
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.25;
+    mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
+    -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
+  }
+
+  /* TYPOGRAPHY */
+  h1, h2, h3, .h1, .h2, .h3, .ui.header { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin: 0; line-height: 1.0; letter-spacing: -0.04em; text-transform: uppercase; color: var(--white); }
+  a { text-decoration: none; color: inherit; transition: 0.3s; }
+  a:hover { color: var(--blush); }
+
+  /* HEADER */
+  .site-header{
+    position:fixed; top:20px; left:50%; transform: translateX(-50%);
+    width: calc(100% - 40px); max-width: 1360px;
+    z-index:100;
+    padding: 16px 0;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 4px;
+  }
+
+  .brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.05em; display:flex; gap:10px; align-items:center; color: var(--white); }
+  .brand-dot { width: 6px; height: 6px; background: var(--orange); animation: blink 3s infinite; }
+  @keyframes blink { 30% { opacity: 0; } }
+
+  .nav-link-custom { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); opacity: 0.7; display: inline-block; }
+  .nav-link-custom:hover { opacity: 1; color: var(--white); }
+  
+  /* UTILITIES */
+  /* .container { max-width: 1200px; margin: 0 auto; padding: 0; position: relative; z-index: 2; } */
+  
+  /* TECHNICAL LABELS */
+  .tech-label {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 14px; letter-spacing: 0.1em; color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 10px; display: block;
+  }
+  .tech-label::before { content: '['; margin-right: 5px; color: var(--border); }
+  .tech-label::after { content: ']'; margin-left: 5px; color: var(--border); }
+
+  /* SECTIONS */
+  .section { padding: 100px 0; border-bottom: 1px solid var(--border); }
+  .hero-section { padding-top: 180px; padding-bottom: 80px; }
+
+  /* GRID SYSTEM */
+  .row { display: flex; flex-wrap: wrap; margin: -16px; }
+  .col { padding: 16px; }
+  .col-12 { width: 100%; }
+  .col-8 { width: 66.666%; }
+  .col-6 { width: 50%; }
+  .col-4 { width: 33.333%; }
+  
+  @media(max-width: 768px) {
+    .col-8, .col-6, .col-4 { width: 100%; }
+  }
+
+  /* HERO ELEMENTS */
+  .project-title { font-size: clamp(3rem, 6vw, 5rem); line-height: 0.9; margin-bottom: 24px; }
+  .project-desc { font-size: 1.125rem; color: var(--dim); max-width: 650px; }
+  
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 24px; padding: 8px 12px;
+    border: 1px solid var(--green); color: var(--green);
+    font-family: var(--font-head); font-size: 12px;
+    color: var(--green) !important;
+  }
+  .blink-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: blink 1.5s infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* TECH SPECS BOX */
+  .spec-box {
+    background: var(--surface); border: 1px solid var(--border); padding: 24px;
+    height: 100%;
+  }
+  .spec-row {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    font-family: var(--font-head); font-size: 13px;
+  }
+  .spec-row:last-child { border-bottom: none; }
+  .spec-key { color: var(--orange); }
+  .spec-val { color: var(--white); text-align: right; }
+
+  /* BLUEPRINT IMAGES (TEMPLATE MATCH) */
+  .blueprint-card {
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.2);
+    padding: 20px; position: relative;
+    transition: border-color 0.3s;
+  }
+  .blueprint-card:hover { border-color: var(--white); z-index: 5; }
+  
+  /* Corner Marks Logic */
+  .corner-tl { position: absolute; top: -1px; left: -1px; width: 10px; height: 10px; border-top: 1px solid var(--white); border-left: 1px solid var(--white); }
+  .corner-br { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-bottom: 1px solid var(--white); border-right: 1px solid var(--white); }
+
+  /* Zoom Wrapper Logic */
+  .bp-img-wrap {
+    width: 100%; height: auto;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .bp-image { 
+    width: 100%; height: auto; display: block; 
+    filter: grayscale(30%); 
+    transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), filter 0.6s ease;
+  }
+  
+  .blueprint-card:hover .bp-image { 
+    filter: grayscale(0%);
+  }
+  
+  .bp-meta {
+    margin-top: 12px; display: flex; justify-content: space-between;
+    font-family: var(--font-head); font-size: 10px; color: var(--dim);
+  }
+
+  /* COLOR SWATCHES */
+  .swatch { height: 50px; border: 1px solid var(--border); margin-bottom: 8px; position: relative; }
+  .swatch span {
+    position: absolute; bottom: 2px; right: 4px;
+    font-size: 10px; font-family: var(--font-head);
+    background: rgba(0,0,0,0.5); padding: 2px 4px; color: #fff;
+  }
+
+  /* FOOTER NAV */
+  .footer-nav { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; }
+  .next-project { text-align: right; }
+  .next-label { font-size: 10px; color: var(--dim); text-transform: uppercase; display: block; }
+  .next-link { font-size: 1.5rem; font-family: var(--font-head); font-weight: 600; }
+  .next-link:hover { color: var(--orange); }
+
+  /* FOOTER */
+  footer {
+    padding: 100px 0 60px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted); font-size: 15px;
+  }
+  .social-link { color: var(--text-muted); font-size: 1.2rem; transition: 0.3s; }
+  .social-link:hover { color: var(--white); }
+
+</style>
+</head>
+<body>
+
+  <div class="math-grid"></div>
+
+<header class="site-header">
+    <div class="ui container">
+        <div class="ui middle aligned unstackable grid">
+        <div class="eight wide column">
+            <div class="brand">
+            <img src="../images/logo.svg" width="50px" alt="Vitro Logo">
+            <div class="brand-dot"></div>
+            <a href="/">VITRO MEDIA LAB</a>
+            </div>
+        </div>
+        <div class="eight wide column right aligned">
+            <nav>
+            <a href="/contact.html" class="nav-link-custom">Contact</a>
+            </nav>
+        </div>
+        </div>
+    </div>
+</header>
+
+  <section class="section hero-section">
+    <div class="ui container">
+      <div class="row">
+        <div class="col col-8">
+          <span class="tech-label">Fig 1.0 — Manifest</span>
+          <h1 class="project-title">Gibson Wells<br>Audio</h1>
+          <p class="project-desc">
+            Constructing a digital venue for a multi-instrumentalist. We bridged the gap between live performance logistics and studio engineering portfolios, resulting in a cohesive "Music Journal" aesthetic.
+          </p>
+          <a href="https://www.gibsonwellsaudio.com/" target="_blank" class="status-badge">
+            <div class="blink-dot"></div> SYSTEM ONLINE (VIEW LIVE)
+          </a>
+        </div>
+
+        <div class="col col-4">
+          <div class="spec-box">
+            <h4 style="font-size: 12px; color: var(--dim); margin-bottom: 16px;">// TECHNICAL DATA</h4>
+            <div class="spec-row">
+              <span class="spec-key">CLIENT</span>
+              <span class="spec-val">Gibson Wells</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">ROLE</span>
+              <span class="spec-val">Dev & Strategy</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">STACK</span>
+              <span class="spec-val">WordPress / PHP</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">YEAR</span>
+              <span class="spec-val">2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="ui container">
+      <span class="tech-label">Fig 2.0 — Deconstruction</span>
+      
+      <div class="row">
+        <div class="col col-4">
+          <h3 style="font-size: 14px; margin-bottom: 20px; opacity: 0.7;">[01] Color Logic</h3>
+          <div class="swatch" style="background: #111111;"><span>#111111 / SHOCKING BLACK</span></div>
+          <div class="swatch" style="background: #999999;"><span>#999999 / MEDIUM GREY</span></div>
+          <div class="swatch" style="background: #4063e6;"><span>#4063e6 / ROYAL BLUE</span></div>
+        </div>
+
+        <div class="col col-8">
+          <h3 style="font-size: 14px; margin-bottom: 20px; opacity: 0.7;">[02] Typography Engine</h3>
+          <div style="border-left: 1px solid var(--border); padding-left: 24px;">
+            <div style="margin-bottom: 32px;">
+              <span style="font-size: 10px; color: var(--orange); display: block;">HEADER TYPEFACE</span>
+              <span style="font-family: 'Poppins'; font-size: 32px; font-weight: 700;">Popins</span>
+              <p style="font-family: 'Poppins'; font-size: 14px; color: var(--dim);">ABCDEFGHIJKLM 1234567890</p>
+            </div>
+            <div>
+              <span style="font-size: 10px; color: var(--orange); display: block;">BODY TYPEFACE</span>
+              <span style="font-family: 'Josefin Sans'; font-size: 32px;">Inter Sans</span>
+              <p style="font-family: 'Josefin Sans'; font-size: 14px; color: var(--dim);">The quick brown fox jumps over the lazy dog.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="ui container">
+      <span class="tech-label">Fig 3.0 — Interface Views</span>
+      
+      <div class="row" style="margin-bottom: 40px;">
+        <div class="col col-12">
+          <div class="blueprint-card">
+            <div class="corner-tl"></div><div class="corner-br"></div>
+            <div class="bp-img-wrap">
+                <img src="gibson-wells-audio assets/hero.png" alt="Desktop" class="bp-image">
+            </div>
+            <div class="bp-meta">
+              <span>VIEWPORT: 1920px</span>
+              <span>COMPONENT: HERO_MAIN</span>
+            </div>
+          </div>
+          <p style="margin-top: 16px; font-size: 14px; color: var(--dim);">
+            <strong style="color: #fff;">The Stage:</strong> Establishing the artist's persona immediately with high-contrast portraiture.
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col col-6">
+          <div class="blueprint-card">
+            <div class="corner-tl"></div><div class="corner-br"></div>
+            <div class="bp-img-wrap">
+                <img src="gibson-wells-audio assets/nav.png" alt="Mobile Nav" class="bp-image">
+            </div>
+            <div class="bp-meta">
+              <span>VIEWPORT: 390px</span>
+              <span>COMPONENT: NAV_DRAWER</span>
+            </div>
+          </div>
+        </div>
+        <div class="col col-6">
+          <div class="blueprint-card">
+            <div class="corner-tl"></div><div class="corner-br"></div>
+            <div class="bp-img-wrap">
+                <img src="gibson-wells-audio assets/media-player.png" alt="Media Player" class="bp-image">
+            </div>
+            <div class="bp-meta">
+              <span>VIEWPORT: 390px</span>
+              <span>COMPONENT: MEDIA_PLAYER</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- <footer class="section" style="padding: 60px 0;">
+    <div class="ui container">
+      <div class="footer-nav">
+        <a href="#" style="color: var(--dim); font-size: 14px;"><i class="fas fa-arrow-left"></i> PREVIOUS</a>
+        
+        <div class="next-project">
+          <span class="next-label">Next Project</span>
+          <a href="#" class="next-link">MyoFlow Massage <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer> -->
+
+    <footer>
+    <div class="ui container">
+      <div class="ui grid stackable mb-5 reveal stagger-1">
+        <div class="twelve wide column reveal stagger-2">
+          <span class="tech-label">Fig 4.0 — Contact</span>
+          <h2 class="" style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital identity.</h2>
+        </div>
+        <div class="four wide column right aligned middle aligned">
+          <a href="/contact.html" class="ui button inverted basic" style="font-weight: 600; border-radius: 0;">Start a Project</a>
+        </div>
+      </div>
+      
+      <div class="ui grid align-items-center pt-4" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="eight wide column mb-3 mb-md-0">
+          © <script>document.write(new Date().getFullYear())</script> Vitro Media Lab
+        </div>
+        <div class="eight wide column right aligned">
+          <a href="https://www.instagram.com/vitromedialab/" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-instagram"></i></a>
+          <a href="mailto:hello@vitromedialab.com" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fas fa-envelope"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

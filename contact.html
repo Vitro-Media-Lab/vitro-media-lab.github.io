@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Vitro Media Lab — Design by Choice</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<!-- Semantic UI CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
-<!-- FontAwesome Icons (Semantic UI uses FontAwesome internally often, but we'll keep this for specific versions) -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
 <style>
@@ -19,14 +17,14 @@
     --dim: rgba(255, 255, 255, 0.4);
     --border: rgba(255, 255, 255, 0.15);
 
-        /* YOUR PALETTE */
+    /* YOUR PALETTE */
     --navy: #2D364D;
     --blush: #F2D4CA;
     --orange: #D37250;
     --green: #5F9857;
     --olive: #696954;
     --grey: #3E3E3E;
-    --black: #0F1219; /* Slightly darker than Navy for contrast */
+    --black: #0F1219; 
     
     --text-main: var(--white);
     --text-muted: var(--dim);
@@ -46,7 +44,6 @@
   /* MATH PIXEL GRID */
   .math-grid {
     position: fixed; inset: 0; z-index: -2; pointer-events: none;
-    perspective: 1000px;
     overflow: hidden;
   }
   .math-grid::before {
@@ -55,37 +52,34 @@
       linear-gradient(to right, var(--border) 1px, transparent 1px),
       linear-gradient(to bottom, var(--border) 1px, transparent 1px);
     background-size: 80px 80px;
-    /* transform: rotateX(85deg); */
     opacity: 0.25;
     mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
     -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
   }
 
+  /* TYPOGRAPHY */
   h1, h2, h3, .h1, .h2, .h3, .ui.header { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin: 0; line-height: 1.0; letter-spacing: -0.04em; text-transform: uppercase; color: var(--white); }
   a { text-decoration: none; color: inherit; transition: 0.3s; }
-  a:hover { color: var(--white); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  a:hover { color: var(--blush); }
 
-  /* GLASS HEADER */
+  
+  /* HEADER */
   .site-header{
     position:fixed; top:20px; left:50%; transform: translateX(-50%);
     width: calc(100% - 40px); max-width: 1360px;
     z-index:100;
-    padding: 16px 24px;
-    display: flex;
-    justify-content: space-between;
-    
-    /* The Glass Effect */
+    padding: 16px 0;
     background: rgba(0,0,0,0.3);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    /* border: 1px solid var(--navy); */
     border-radius: 4px;
   }
   
-  .brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.05em; display:flex; gap:10px; align-items:center; }
-  .brand-dot { width: 6px; height: 6px; background: var(--orange); }
+  .brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.05em; display:flex; gap:10px; align-items:center; color: var(--white); }
+  .brand-dot { width: 6px; height: 6px; background: var(--orange); animation: blink 3s infinite; }
+  @keyframes blink { 30% { opacity: 0; } }
 
-  .nav-link-custom { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); opacity: 0.7; margin-left: 24px; }
+  .nav-link-custom { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); opacity: 0.7; display: inline-block; }
   .nav-link-custom:hover { opacity: 1; color: var(--white); }
 
   /* HERO */
@@ -101,7 +95,6 @@
   .hero-statement {
     font-size: clamp(3.5rem, 9vw, 8rem);
     letter-spacing: -0.03em;
-    /* mix-blend-mode: hard-light; */
   }
   .hero-statement .reveal { display: inline-block; }
 
@@ -122,14 +115,26 @@
     margin-top: 40px;
     margin-bottom: 40px;
     font-size: 1.3rem; color: var(--text-muted);
-    display: flex; gap: 20px; align-items: center; /* Semantic UI doesn't have direct gap utility */
+    display: flex; gap: 20px; align-items: center;
     font-family: 'Space Grotesk', monospace;
   }
   .hero-line { height: 1px; width: 60px; background: var(--orange); }
 
   /* MOTION REVEAL */
-  .reveal { opacity: 0; -webkit-clip-path: inset(100% 0 0 0); clip-path: inset(100% 0 0 0); -webkit-transition: all 1s cubic-bezier(0.1, 0.9, 0.2, 1); transition: all 1s cubic-bezier(0.1, 0.9, 0.2, 1); }
-  .reveal.active { opacity: 1; -webkit-clip-path: inset(0 0 0 0); clip-path: inset(0 0 0 0); }
+  .reveal { 
+      opacity: 0; 
+      -webkit-clip-path: inset(100% 0 0 0); 
+      clip-path: inset(100% 0 0 0); 
+      transform: translateY(20px); 
+      transition: all 1s cubic-bezier(0.1, 0.9, 0.2, 1); 
+  }
+  .reveal.active { 
+      opacity: 1; 
+      -webkit-clip-path: inset(0 0 0 0); 
+      clip-path: inset(0 0 0 0); 
+      transform: translateY(0);
+  }
+  
   .reveal.active.stagger-1 { transition-delay: 0.1s; }
   .reveal.active.stagger-2 { transition-delay: 0.2s; }
   .reveal.active.stagger-3 { transition-delay: 0.3s; }
@@ -163,47 +168,79 @@
   }
 
   .scroll-track {
-    display: flex; gap: 24px; padding-left: 40px; padding-right: 40px;
+    display: flex; gap: 24px; 
+    /* FIX: Added vertical padding (10px) to prevent clipping of corner marks */
+    padding: 10px 40px; 
     overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none; 
+    
+    /* SCROLL PHYSICS - Free Flow */
+    -webkit-overflow-scrolling: touch;
   }
-  .scroll-track::-webkit-scrollbar { display: none; } /* Chrome */
+  .scroll-track::-webkit-scrollbar { display: none; }
 
+  /* CARD STYLING (BLUEPRINT) */
   .project-card {
     flex: 0 0 35vw; min-width: 400px;
     aspect-ratio: 16/10;
-    background: var(--surface);
+    position: relative;
     border: 1px solid var(--border);
-    border-radius: 0px;
+    background: rgba(0,0,0,0.2);
+    padding: 20px; 
+    transition: border-color 0.3s;
+  }
+  .project-card:hover { 
+    border-color: var(--white); 
+    z-index: 5;
+  }
+
+  /* Corner Marks Logic */
+  .corner-tl { position: absolute; top: -1px; left: -1px; width: 10px; height: 10px; border-top: 1px solid var(--white); border-left: 1px solid var(--white); }
+  .corner-br { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-bottom: 1px solid var(--white); border-right: 1px solid var(--white); }
+
+  /* Image Wrapper */
+  .card-img-wrap {
+    width: 100%; height: 100%;
     overflow: hidden;
     position: relative;
-    transition: transform 0.3s;
   }
-  .project-card:hover { transform: scale(1.02); z-index: 5; border-color: var(--white); }
-  .project-card img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.5s; object-position: top; }
-  .project-card:hover img { filter: grayscale(0%); }
   
+  .card-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), filter 0.6s ease;
+    object-position: top;
+  }
+  
+  .project-card:hover .card-img-wrap img {
+    filter: grayscale(0%);
+  }
+
   .card-meta {
-    position: absolute; top: 20px; left: 20px;
+    position: absolute; top: 10px; left: 10px;
     background: var(--bg);
-    padding: 5px 10px; border: 1px solid var(--border);
+    padding: 4px 8px; 
+    border: 1px solid var(--border);
     font-family: 'Space Grotesk', monospace;
-    font-size: 13px; font-weight: 500; text-transform: uppercase;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    z-index: 10;
+    letter-spacing: 0.05em;
   }
 
   /* LIST LAYOUT */
-  .section{
-    padding: 100px 0; position: relative; z-index: 2;
-    border-top: 1px solid var(--border);
-  }
+  .section{ padding: 100px 0; position: relative; z-index: 2; border-top: 1px solid var(--border); }
   .services { padding: 100px 0; position: relative; z-index: 2; }
+  
+  /* SERVICE ROW */
   .service-row {
-    padding: 40px 0;
-    border-top: 1px solid var(--border);
-    transition: opacity 1s cubic-bezier(0.1, 0.9, 0.2, 1), clip-path 1s cubic-bezier(0.1, 0.9, 0.2, 1);
     position: relative;
+    border-top: 1px solid var(--border);
+    padding: 20px 20px 20px 20px; 
+    transition: opacity 1s cubic-bezier(0.1, 0.9, 0.2, 1);
   }
   .service-row:hover { background-color: rgba(255, 255, 255, 0.03); }
+  
   .service-row::before {
     content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 1px; background: var(--white);
     transform: scaleY(0); transition: transform 0.3s; transform-origin: top;
@@ -225,37 +262,35 @@
 
   @media(max-width: 768px) {
     .hero-statement { font-size: 3rem; }
-    .project-card { flex: 0 0 85vw; min-width: auto; }
+    .project-card { flex: 0 0 85vw; min-width: auto; margin-right: 16px; }
     .service-row h3 { font-size: 2rem; }
-    .nav-link-custom { margin-left: 12px; font-size: 11px; }
     .reveal { opacity: 1 !important; clip-path: inset(0 0 0 0) !important; }
     .services { padding: 60px 0; }
-    .service-row { padding: 25px 0; }
+    .service-row { padding: 30px 0 30px 24px; }
   }
-
-  /* CONTACT FORM STYLES */
-  .ui.form.inverted .field > label { color: var(--dim); font-family: 'Space Grotesk', monospace; font-weight: normal; letter-spacing: 0.05em; margin-bottom: 8px; }
-  .ui.form.inverted input, .ui.form.inverted textarea, .ui.form.inverted select {
-    background: var(--surface) !important; border: 1px solid var(--border) !important; color: var(--white) !important; border-radius: 0 !important; font-family: 'Inter', sans-serif;
-  }
-  .ui.form.inverted input:focus, .ui.form.inverted textarea:focus, .ui.form.inverted select:focus {
-    border-color: var(--white) !important; background: rgba(255,255,255,0.05) !important;
-  }
-  .ui.selection.dropdown { background: var(--surface); border: 1px solid var(--border); color: var(--white); border-radius: 0; }
 </style>
 </head>
 <body>
   <div class="math-grid"></div>
   
-  <header class="site-header ui secondary">
-    <div class="brand">
-      <div class="brand-dot"></div>
-      <a href="/">VITRO MEDIA LAB</a>
+<header class="site-header">
+  <div class="ui container">
+    <div class="ui middle aligned unstackable grid">
+      <div class="eight wide column">
+        <div class="brand">
+          <img src="images/logo.svg" width="50px" alt="Vitro Logo">
+          <div class="brand-dot"></div>
+          <a href="/">VITRO MEDIA LAB</a>
+        </div>
+      </div>
+      <div class="eight wide column right aligned">
+        <nav>
+          <a href="/contact.html" class="nav-link-custom">Contact</a>
+        </nav>
+      </div>
     </div>
-    <nav class="d-flex">
-      <a href="/contact.html" class="nav-link-custom">Contact</a>
-    </nav>
-  </header>
+  </div>
+</header>
 
   <section class="hero">
     <div class="ui container">
@@ -325,8 +360,11 @@
     <div class="ui container">
       <div class="ui grid stackable mb-5 reveal stagger-1">
         <div class="twelve wide column reveal stagger-2">
-          <span class="tech-label">Fig 2.0 — Contact</span>
-          <h2 class="" style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital legacy.</h2>
+          <span class="tech-label">Fig 5.0 — Contact</span>
+          <h2 class="" style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital identity.</h2>
+        </div>
+        <div class="four wide column right aligned middle aligned">
+          <!-- <a href="/contact.html" class="ui button inverted basic" style="font-weight: 600; border-radius: 0;">Start a Project</a> -->
         </div>
       </div>
       
@@ -335,15 +373,31 @@
           © <script>document.write(new Date().getFullYear())</script> Vitro Media Lab
         </div>
         <div class="eight wide column right aligned">
-          <a href="#" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-linkedin"></i></a>
-          <a href="#" class="social-link" style="margin-left: 1.5rem;"><i class="fas fa-envelope"></i></a>
+          <a href="https://www.instagram.com/vitromedialab/" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-instagram"></i></a>
+          <a href="mailto:hello@vitromedialab.com" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fas fa-envelope"></i></a>
         </div>
       </div>
     </div>
   </footer>
 
   <script>
+    /* ROTATING TEXT ENGINE */
+    const words = ["websites", "photos", "artwork", "videos", "graphics"];
+    let currentIndex = 0;
+    const textElement = document.getElementById("rotating-text");
+
+    function rotateWord() {
+      textElement.classList.remove("slide-in");
+      textElement.classList.add("slide-out");
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % words.length;
+        textElement.innerText = words[currentIndex];
+        textElement.classList.remove("slide-out");
+        textElement.classList.add("slide-in");
+      }, 600);
+    }
+    setInterval(rotateWord, 3000);
+
     /* SCROLL REVEAL ENGINE */
     const observerOptions = { threshold: 0, rootMargin: "0px" };
     const observer = new IntersectionObserver((entries) => {
@@ -352,50 +406,10 @@
       });
     }, observerOptions);
     document.querySelectorAll('.reveal').forEach(el => {
-      // Only observe if it's not already active (e.g., hero elements might be visible on load)
       if (!el.classList.contains('active')) {
         observer.observe(el);
       }
     });
-
-    /* GOOGLE APPS SCRIPT FORM SUBMISSION */
-    const contactForm = document.getElementById("contact-form");
-    
-    // TODO: Paste your Google Apps Script Web App URL here
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2J3ckTsn539ZZT8PFV56xJofHbVhbvPH38odTJfjUmxxLKHCBgmiXezNccKi9usV0fA/exec";
-
-    if (contactForm) {
-      contactForm.addEventListener("submit", function(e) {
-        e.preventDefault();
-        const btn = contactForm.querySelector("button[type='submit']");
-        const originalText = btn.innerText;
-        
-        // Set loading state
-        btn.classList.add("loading");
-        btn.disabled = true;
-
-        // Convert FormData to URLSearchParams for reliable GAS handling
-        const data = new URLSearchParams(new FormData(contactForm));
-
-        // mode: 'no-cors' is required because Google Apps Script redirects the response,
-        // which browsers often block as a CORS violation.
-        fetch(SCRIPT_URL, { method: "POST", body: data, mode: 'no-cors' })
-          .then(response => {
-            // With 'no-cors', we get an opaque response (status 0). We assume success.
-            btn.classList.remove("loading");
-            btn.innerText = "Message Sent!";
-            btn.classList.remove("basic"); // Solid button for success
-            contactForm.reset();
-          })
-          .catch(error => {
-            console.error('Error!', error.message);
-            btn.classList.remove("loading");
-            alert("Error sending message. Please email us directly.");
-            btn.innerText = originalText;
-            btn.disabled = false;
-          });
-      });
-    }
   </script>
 
 </body>

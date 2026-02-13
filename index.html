@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Vitro Media Lab — Design by Choice</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<!-- Semantic UI CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
-<!-- FontAwesome Icons (Semantic UI uses FontAwesome internally often, but we'll keep this for specific versions) -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
 <style>
@@ -19,14 +17,14 @@
     --dim: rgba(255, 255, 255, 0.4);
     --border: rgba(255, 255, 255, 0.15);
 
-        /* YOUR PALETTE */
+    /* YOUR PALETTE */
     --navy: #2D364D;
     --blush: #F2D4CA;
     --orange: #D37250;
     --green: #5F9857;
     --olive: #696954;
     --grey: #3E3E3E;
-    --black: #0F1219; /* Slightly darker than Navy for contrast */
+    --black: #0F1219; 
     
     --text-main: var(--white);
     --text-muted: var(--dim);
@@ -46,7 +44,6 @@
   /* MATH PIXEL GRID */
   .math-grid {
     position: fixed; inset: 0; z-index: -2; pointer-events: none;
-    perspective: 1000px;
     overflow: hidden;
   }
   .math-grid::before {
@@ -55,37 +52,34 @@
       linear-gradient(to right, var(--border) 1px, transparent 1px),
       linear-gradient(to bottom, var(--border) 1px, transparent 1px);
     background-size: 80px 80px;
-    /* transform: rotateX(85deg); */
     opacity: 0.25;
     mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
     -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
   }
 
+  /* TYPOGRAPHY */
   h1, h2, h3, .h1, .h2, .h3, .ui.header { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin: 0; line-height: 1.0; letter-spacing: -0.04em; text-transform: uppercase; color: var(--white); }
   a { text-decoration: none; color: inherit; transition: 0.3s; }
-  a:hover { color: var(--white); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+  a:hover { color: var(--blush); }
 
-  /* GLASS HEADER */
+  
+  /* HEADER */
   .site-header{
     position:fixed; top:20px; left:50%; transform: translateX(-50%);
     width: calc(100% - 40px); max-width: 1360px;
     z-index:100;
-    padding: 16px 24px;
-    display: flex;
-    justify-content: space-between;
-    
-    /* The Glass Effect */
+    padding: 16px 0;
     background: rgba(0,0,0,0.3);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    /* border: 1px solid var(--navy); */
     border-radius: 4px;
   }
   
-  .brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.05em; display:flex; gap:10px; align-items:center; }
-  .brand-dot { width: 6px; height: 6px; background: var(--orange); }
+  .brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.05em; display:flex; gap:10px; align-items:center; color: var(--white); }
+  .brand-dot { width: 6px; height: 6px; background: var(--orange); animation: blink 3s infinite; }
+  @keyframes blink { 30% { opacity: 0; } }
 
-  .nav-link-custom { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); opacity: 0.7; margin-left: 24px; }
+  .nav-link-custom { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); opacity: 0.7; display: inline-block; }
   .nav-link-custom:hover { opacity: 1; color: var(--white); }
 
   /* HERO */
@@ -101,7 +95,6 @@
   .hero-statement {
     font-size: clamp(3.5rem, 9vw, 8rem);
     letter-spacing: -0.03em;
-    /* mix-blend-mode: hard-light; */
   }
   .hero-statement .reveal { display: inline-block; }
 
@@ -122,14 +115,26 @@
     margin-top: 40px;
     margin-bottom: 40px;
     font-size: 1.3rem; color: var(--text-muted);
-    display: flex; gap: 20px; align-items: center; /* Semantic UI doesn't have direct gap utility */
+    display: flex; gap: 20px; align-items: center;
     font-family: 'Space Grotesk', monospace;
   }
   .hero-line { height: 1px; width: 60px; background: var(--orange); }
 
   /* MOTION REVEAL */
-  .reveal { opacity: 0; -webkit-clip-path: inset(100% 0 0 0); clip-path: inset(100% 0 0 0); -webkit-transition: all 1s cubic-bezier(0.1, 0.9, 0.2, 1); transition: all 1s cubic-bezier(0.1, 0.9, 0.2, 1); }
-  .reveal.active { opacity: 1; -webkit-clip-path: inset(0 0 0 0); clip-path: inset(0 0 0 0); }
+  .reveal { 
+      opacity: 0; 
+      -webkit-clip-path: inset(100% 0 0 0); 
+      clip-path: inset(100% 0 0 0); 
+      transform: translateY(20px); 
+      transition: all 1s cubic-bezier(0.1, 0.9, 0.2, 1); 
+  }
+  .reveal.active { 
+      opacity: 1; 
+      -webkit-clip-path: inset(0 0 0 0); 
+      clip-path: inset(0 0 0 0); 
+      transform: translateY(0);
+  }
+  
   .reveal.active.stagger-1 { transition-delay: 0.1s; }
   .reveal.active.stagger-2 { transition-delay: 0.2s; }
   .reveal.active.stagger-3 { transition-delay: 0.3s; }
@@ -163,47 +168,79 @@
   }
 
   .scroll-track {
-    display: flex; gap: 24px; padding-left: 40px; padding-right: 40px;
+    display: flex; gap: 24px; 
+    /* FIX: Added vertical padding (10px) to prevent clipping of corner marks */
+    padding: 10px 40px; 
     overflow-x: auto;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none; 
+    
+    /* SCROLL PHYSICS - Free Flow */
+    -webkit-overflow-scrolling: touch;
   }
-  .scroll-track::-webkit-scrollbar { display: none; } /* Chrome */
+  .scroll-track::-webkit-scrollbar { display: none; }
 
+  /* CARD STYLING (BLUEPRINT) */
   .project-card {
     flex: 0 0 35vw; min-width: 400px;
     aspect-ratio: 16/10;
-    background: var(--surface);
+    position: relative;
     border: 1px solid var(--border);
-    border-radius: 0px;
+    background: rgba(0,0,0,0.2);
+    padding: 20px; 
+    transition: border-color 0.3s;
+  }
+  .project-card:hover { 
+    border-color: var(--white); 
+    z-index: 5;
+  }
+
+  /* Corner Marks Logic */
+  .corner-tl { position: absolute; top: -1px; left: -1px; width: 10px; height: 10px; border-top: 1px solid var(--white); border-left: 1px solid var(--white); }
+  .corner-br { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-bottom: 1px solid var(--white); border-right: 1px solid var(--white); }
+
+  /* Image Wrapper */
+  .card-img-wrap {
+    width: 100%; height: 100%;
     overflow: hidden;
     position: relative;
-    transition: transform 0.3s;
   }
-  .project-card:hover { transform: scale(1.02); z-index: 5; border-color: var(--white); }
-  .project-card img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.5s; object-position: top; }
-  .project-card:hover img { filter: grayscale(0%); }
   
+  .card-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), filter 0.6s ease;
+    object-position: top;
+  }
+  
+  .project-card:hover .card-img-wrap img {
+    filter: grayscale(0%);
+  }
+
   .card-meta {
-    position: absolute; top: 20px; left: 20px;
+    position: absolute; top: 10px; left: 10px;
     background: var(--bg);
-    padding: 5px 10px; border: 1px solid var(--border);
+    padding: 4px 8px; 
+    border: 1px solid var(--border);
     font-family: 'Space Grotesk', monospace;
-    font-size: 13px; font-weight: 500; text-transform: uppercase;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    z-index: 10;
+    letter-spacing: 0.05em;
   }
 
   /* LIST LAYOUT */
-  .section{
-    padding: 100px 0; position: relative; z-index: 2;
-    border-top: 1px solid var(--border);
-  }
+  .section{ padding: 100px 0; position: relative; z-index: 2; border-top: 1px solid var(--border); }
   .services { padding: 100px 0; position: relative; z-index: 2; }
+  
+  /* SERVICE ROW */
   .service-row {
-    padding: 40px 0;
-    border-top: 1px solid var(--border);
-    transition: opacity 1s cubic-bezier(0.1, 0.9, 0.2, 1), clip-path 1s cubic-bezier(0.1, 0.9, 0.2, 1);
     position: relative;
+    border-top: 1px solid var(--border);
+    padding: 20px 20px 20px 20px; 
+    transition: opacity 1s cubic-bezier(0.1, 0.9, 0.2, 1);
   }
   .service-row:hover { background-color: rgba(255, 255, 255, 0.03); }
+  
   .service-row::before {
     content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 1px; background: var(--white);
     transform: scaleY(0); transition: transform 0.3s; transform-origin: top;
@@ -225,27 +262,35 @@
 
   @media(max-width: 768px) {
     .hero-statement { font-size: 3rem; }
-    .project-card { flex: 0 0 85vw; min-width: auto; }
+    .project-card { flex: 0 0 85vw; min-width: auto; margin-right: 16px; }
     .service-row h3 { font-size: 2rem; }
-    .nav-link-custom { margin-left: 12px; font-size: 11px; }
     .reveal { opacity: 1 !important; clip-path: inset(0 0 0 0) !important; }
     .services { padding: 60px 0; }
-    .service-row { padding: 25px 0; }
+    .service-row { padding: 30px 0 30px 24px; }
   }
 </style>
 </head>
 <body>
   <div class="math-grid"></div>
   
-  <header class="site-header ui secondary">
-    <div class="brand">
-      <div class="brand-dot"></div>
-      <a href="/">VITRO MEDIA LAB</a>
+<header class="site-header">
+  <div class="ui container">
+    <div class="ui middle aligned unstackable grid">
+      <div class="eight wide column">
+        <div class="brand">
+          <img src="images/logo.svg" width="50px" alt="Vitro Logo">
+          <div class="brand-dot"></div>
+          <a href="/">VITRO MEDIA LAB</a>
+        </div>
+      </div>
+      <div class="eight wide column right aligned">
+        <nav>
+          <a href="/contact.html" class="nav-link-custom">Contact</a>
+        </nav>
+      </div>
     </div>
-    <nav class="d-flex">
-      <a href="/contact.html" class="nav-link-custom">Contact</a>
-    </nav>
-  </header>
+  </div>
+</header>
 
   <section class="hero">
     <div class="ui container">
@@ -280,62 +325,96 @@
       <span class="tech-label reveal stagger-1">Fig 2.0 — Selected Works</span>
       <div class="ui grid stackable middle aligned reveal stagger-2">
         <div class="eight wide column">
-          <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Web Development</h2>
+          <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Digital Design & Development</h2>
         </div>
         <div class="eight wide column right aligned">
-          <a href="#" class="mt-2 mt-md-0" style="font-size: 14px; color: var(--white);">View All <i class="fas fa-arrow-right ms-1"></i></a>
+          <a href="work/gibson-wells-audio.html" class="mt-2 mt-md-0" style="font-size: 14px; color: var(--white);">View All <i class="fas fa-arrow-right ms-1"></i></a>
         </div>
       </div>
     </div>
     <div class="scroll-track">
+      
+      <a href="work/gibson-wells-audio.html" class="project-card">
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/Gibson.png" alt="Work">
+            <div class="card-meta">Gibson Wells Audio</div>
+        </div>
+      </a>
+
       <div class="project-card">
-        <img src="images/Gibson.png" alt="Work">
-        <div class="card-meta">Gibson Wells Audio</div>
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/MyoFlow.png" alt="Work">
+            <div class="card-meta">MyoFlow Massage</div>
+        </div>
       </div>
+
       <div class="project-card">
-        <img src="images/MyoFlow.png" alt="Work">
-        <div class="card-meta">MyoFlow Massage</div>
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/Coffee.png" alt="Work">
+            <div class="card-meta">Ghost Coffee Roaster</div>
+        </div>
       </div>
+      
       <div class="project-card">
-        <img src="images/Coffee.png" alt="Work">
-        <div class="card-meta">Ghost Coffee Roaster</div>
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/Plumbing.png" alt="Work">
+            <div class="card-meta">Big Dog Plumbing</div>
+        </div>
       </div>
-       <div class="project-card">
-        <img src="images/Plumbing.png" alt="Work">
-        <div class="card-meta">Big Dog Plumbing</div>
-      </div>
+
     </div>
   </section>
 
-    <section class="scroll-section-no-gradiant">
+  <section class="scroll-section-no-gradiant">
     <div class="ui container" style="margin-bottom: 2.5rem;">
       <span class="tech-label reveal stagger-1">Fig 3.0 — Visuals</span>
       <div class="ui grid stackable middle aligned reveal stagger-2">
         <div class="eight wide column">
-          <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Photography</h2>
+          <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Photography & Videography</h2>
         </div>
         <div class="eight wide column right aligned">
-          <a href="#" class="mt-2 mt-md-0" style="font-size: 14px; color: var(--white);">View All <i class="fas fa-arrow-right ms-1"></i></a>
+          <a href="work/gibson-wells-audio.html" class="mt-2 mt-md-0" style="font-size: 14px; color: var(--white);">View All <i class="fas fa-arrow-right ms-1"></i></a>
         </div>
       </div>
     </div>
     <div class="scroll-track">
+      
       <div class="project-card">
-        <img src="images/DSC9206_01.jpg" alt="Work">
-        <div class="card-meta">Event Photography</div>
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/DSC9206_01.jpg" alt="Work">
+            <div class="card-meta">Event Photography</div>
+        </div>
       </div>
+
       <div class="project-card">
-        <img src="images/DSC9695.jpg" alt="Work">
-        <div class="card-meta">Product Photography</div>
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/DSC9695.jpg" alt="Work">
+            <div class="card-meta">Product Photography</div>
+        </div>
       </div>
+
       <div class="project-card">
-        <img src="images/DSC05960.jpg" alt="Work">
-        <div class="card-meta">Wedding Photography</div>
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/DSC05960.jpg" alt="Work">
+            <div class="card-meta">Wedding Photography</div>
+        </div>
       </div>
-       <div class="project-card">
-        <img src="images/DSC_0463_01.jpg" alt="Work">
-        <div class="card-meta">Portraits</div>
+      
+      <div class="project-card">
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/DSC_0463_01.jpg" alt="Work">
+            <div class="card-meta">Portraits</div>
+        </div>
       </div>
+
     </div>
   </section>
 
@@ -343,44 +422,63 @@
     <div class="ui container">
       <div style="margin-bottom: 4rem;">
         <span class="tech-label reveal stagger-1">Fig 4.0 — Capabilities</span>
-        <h2 class="reveal stagger-2" style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Our Expertise</h2>
+        <h2 class="reveal stagger-2" style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white); margin-bottom: 2.5rem;">Our Expertise</h2>
+        <p class="reveal stagger-3">We translate visual strategy into technical reality to convert your brand's intent into functional digital assets.</p>
       </div>
       
-      <div class="ui middle aligned grid stackable service-row reveal stagger-3">
-        <div class="five wide column">
-          <h3 class="ui header"><i class="fas fa-code service-icon"></i>Web Development</h3>
-        </div>
-        <div class="eleven wide column">
-          <p>From custom front-end designs to robust back-end systems, we build dynamic and responsive web experiences tailored to your needs.</p>
-        </div>
-      </div>
-      
-      <div class="ui middle aligned grid stackable service-row reveal stagger-4">
-        <div class="five wide column">
-          <h3 class="ui header"><i class="fas fa-camera service-icon"></i>Photography</h3>
-        </div>
-        <div class="eleven wide column">
-          <p>Capturing life's most precious moments, from stunning wedding and portrait photography to dynamic event coverage.</p>
+      <div class="service-row reveal stagger-3">
+        <div class="ui middle aligned grid stackable">
+            <div class="five wide column">
+            <h3 class="ui header"><i class="fas fa-code service-icon"></i>Web Development</h3>
+            </div>
+            <div class="eleven wide column">
+            <p>From custom front-end designs to robust back-end systems, we build dynamic and responsive web experiences tailored to your needs.</p>
+            </div>
         </div>
       </div>
       
-      <div class="ui middle aligned grid stackable service-row reveal stagger-5">
-        <div class="five wide column">
-          <h3 class="ui header"><i class="fas fa-video service-icon"></i>Videography</h3>
-        </div>
-        <div class="eleven wide column">
-          <p>Bringing your stories to life with compelling visual narratives, from concept development to final production.</p>
+      <div class="service-row reveal stagger-4">
+        <div class="ui middle aligned grid stackable">
+            <div class="five wide column">
+            <h3 class="ui header"><i class="fas fa-pen-nib service-icon"></i>Graphic Design</h3>
+            </div>
+            <div class="eleven wide column">
+            <p>Crafting impactful visual identities, logos, and marketing materials that resonate with your audience and elevate your brand.</p>
+            </div>
         </div>
       </div>
       
-      <div class="ui middle aligned grid stackable service-row reveal stagger-6">
-        <div class="five wide column">
-          <h3 class="ui header"><i class="fas fa-pen-nib service-icon"></i>Graphic Design</h3>
-        </div>
-        <div class="eleven wide column">
-          <p>Crafting impactful visual identities, logos, and marketing materials that resonate with your audience and elevate your brand.</p>
+      <div class="service-row reveal stagger-5">
+        <div class="ui middle aligned grid stackable">
+            <div class="five wide column">
+            <h3 class="ui header"><i class="fas fa-camera service-icon"></i>Photography</h3>
+            </div>
+            <div class="eleven wide column">
+            <p>Capturing life's most precious moments, from stunning wedding and portrait photography to dynamic event coverage.</p>
+            </div>
         </div>
       </div>
+      
+      <div class="service-row reveal stagger-6">
+         <div class="ui middle aligned grid stackable">
+            <div class="five wide column">
+            <h3 class="ui header"><i class="fas fa-video service-icon"></i>Videography</h3>
+            </div>
+            <div class="eleven wide column">
+            <p>Bringing your stories to life with compelling visual narratives, from concept development to final production.</p>
+            </div>
+         </div>
+      </div>
+
+      <div class="service-row reveal stagger-6">
+         <div class="ui middle aligned grid stackable">
+            <div class="five wide column">
+            <h3 class="ui header"><i class="fas fa-video service-icon"></i>Content Creation</h3>
+            </div>
+            <div class="eleven wide column">
+            <p>Engineering your brand's voice through creative stewardship, crafting social media narratives and optimizing search engine visibility (SEO) to convert concepts into digital assets.</p>         </div>
+      </div>
+      
     </div>
   </section>
 
@@ -389,7 +487,7 @@
       <div class="ui grid stackable mb-5 reveal stagger-1">
         <div class="twelve wide column reveal stagger-2">
           <span class="tech-label">Fig 5.0 — Contact</span>
-          <h2 class="" style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital legacy.</h2>
+          <h2 class="" style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital identity.</h2>
         </div>
         <div class="four wide column right aligned middle aligned">
           <a href="/contact.html" class="ui button inverted basic" style="font-weight: 600; border-radius: 0;">Start a Project</a>
@@ -401,9 +499,8 @@
           © <script>document.write(new Date().getFullYear())</script> Vitro Media Lab
         </div>
         <div class="eight wide column right aligned">
-          <a href="#" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-linkedin"></i></a>
-          <a href="#" class="social-link" style="margin-left: 1.5rem;"><i class="fas fa-envelope"></i></a>
+          <a href="https://www.instagram.com/vitromedialab/" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-instagram"></i></a>
+          <a href="mailto:hello@vitromedialab.com" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fas fa-envelope"></i></a>
         </div>
       </div>
     </div>
@@ -435,7 +532,6 @@
       });
     }, observerOptions);
     document.querySelectorAll('.reveal').forEach(el => {
-      // Only observe if it's not already active (e.g., hero elements might be visible on load)
       if (!el.classList.contains('active')) {
         observer.observe(el);
       }
