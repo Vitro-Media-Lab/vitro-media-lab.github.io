@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="Vitro Media Lab" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vitro Live — Real-time Transmission</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<style>
+  :root{
+    /* RAW PALETTE */
+    --bg: #050505;
+    --surface: rgba(255, 255, 255, 0.03);
+    --white: #ffffff;
+    --dim: rgba(255, 255, 255, 0.4);
+    --border: rgba(255, 255, 255, 0.15);
+
+    /* YOUR PALETTE */
+    --navy: #2D364D;
+    --blush: #F2D4CA;
+    --orange: #D37250;
+    --green: #5F9857;
+    --olive: #696954;
+    --grey: #3E3E3E;
+    --black: #0F1219; 
+    
+    --text-main: var(--white);
+    --text-muted: var(--dim);
+  }
+  
+  html { scroll-behavior: smooth; }
+
+  body{
+    font-family: 'Inter', sans-serif;
+    font-size: 17px; 
+    background: var(--navy);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* MATH PIXEL GRID */
+  .math-grid {
+    position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    overflow: hidden;
+  }
+  .math-grid::before {
+    content: ''; position: absolute; inset: -100%;
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.25;
+    mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
+    -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
+  }
+
+  /* TYPOGRAPHY */
+  h1, h2, h3, .h1, .h2, .h3, .ui.header { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin: 0; line-height: 1.0; letter-spacing: -0.04em; text-transform: uppercase; color: var(--white); }
+  a { text-decoration: none; color: inherit; transition: 0.3s; }
+  a:hover { color: var(--blush); }
+
+  /* HEADER */
+  .site-header{
+    position:fixed; top:20px; left:50%; transform: translateX(-50%);
+    width: calc(100% - 40px); max-width: 1360px;
+    z-index:100;
+    padding: 16px 0;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 4px;
+  }
+  
+  .brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.05em; display:flex; gap:10px; align-items:center; color: var(--white); }
+    .brand-dot { width: 6px; height: 6px; background: var(--orange); animation: blink 3s infinite; }
+
+.blink-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ff4b2b;
+  border-radius: 50%; 
+  box-shadow: 0 0 12px rgba(255, 75, 43, 0.6); /* Adds the "Online" glow */
+  animation: blink 1.5s infinite;
+}  @keyframes blink { 50% { opacity: 0; } }
+
+  .nav-link-custom { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); opacity: 0.7; display: inline-block; }
+  .nav-link-custom:hover { opacity: 1; color: var(--white); }
+
+  /* HERO */
+  .hero{
+    min-height: 80vh;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+    z-index: 1;
+    padding-top: 120px;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .hero-statement {
+    font-size: clamp(3rem, 7vw, 6rem);
+    letter-spacing: -0.03em;
+  }
+  .hero-statement .reveal { display: inline-block; }
+
+  /* ROTATOR STYLES */
+  .rotator-wrapper {
+    display: inline-flex; flex-direction: column;
+    color: var(--dim); font-style: normal; text-decoration: line-through;
+  }
+  .rotating-word { display: block; transform-origin: left; }
+  
+  /* ANIMATIONS */
+  .slide-out { animation: slideOut .5s cubic-bezier(0.8, 0, 0.2, 1) forwards; }
+  .slide-in { animation: slideIn .7s cubic-bezier(0.8, 0, 0.2, 1) forwards; }
+  @keyframes slideOut { to { transform: translateY(-100%) skewY(5deg); opacity: 0; } }
+  @keyframes slideIn { from { transform: translateY(100%) skewY(5deg); opacity: 0; } to { transform: translateY(0) skewY(0deg); opacity: 1; } }
+
+  .hero-sub {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 1.3rem; color: var(--text-muted);
+    display: flex; gap: 20px; align-items: center;
+    font-family: 'Space Grotesk', monospace;
+  }
+  .hero-line { height: 1px; width: 60px; background: var(--orange); }
+
+  /* MOTION REVEAL */
+  .reveal { 
+      opacity: 0; 
+      -webkit-clip-path: inset(100% 0 0 0); 
+      clip-path: inset(100% 0 0 0); 
+      transform: translateY(20px); 
+      transition: all 1s cubic-bezier(0.1, 0.9, 0.2, 1); 
+  }
+  .reveal.active { 
+      opacity: 1; 
+      -webkit-clip-path: inset(0 0 0 0); 
+      clip-path: inset(0 0 0 0); 
+      transform: translateY(0);
+  }
+  
+  .reveal.active.stagger-1 { transition-delay: 0.1s; }
+  .reveal.active.stagger-2 { transition-delay: 0.2s; }
+  .reveal.active.stagger-3 { transition-delay: 0.3s; }
+  
+  /* TECHNICAL LABELS */
+  .tech-label {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 14px; letter-spacing: 0.1em; color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 10px; display: block;
+  }
+  .tech-label::before { content: '['; margin-right: 5px; color: var(--border); }
+  .tech-label::after { content: ']'; margin-left: 5px; color: var(--border); }
+
+  /* LIVE PLAYER CONTAINER */
+  .live-viewer {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 100px;
+    position: relative;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.4);
+    padding: 15px;
+  }
+  .player-aspect {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+  }
+  .player-aspect iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    filter: contrast(1.1);
+  }
+
+  /* Corner Marks Logic */
+  .corner-tl { position: absolute; top: -1px; left: -1px; width: 15px; height: 15px; border-top: 1px solid var(--white); border-left: 1px solid var(--white); }
+  .corner-br { position: absolute; bottom: -1px; right: -1px; width: 15px; height: 15px; border-bottom: 1px solid var(--white); border-right: 1px solid var(--white); }
+
+  /* SCROLL SECTION */
+  .scroll-section {
+    padding: 100px 0;
+    overflow-x: hidden;
+    position: relative; z-index: 2;
+    border-top: 1px solid var(--border);
+  }
+  .scroll-track {
+    display: flex; gap: 24px; padding: 10px 40px; overflow-x: auto; scrollbar-width: none; 
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll-track::-webkit-scrollbar { display: none; }
+
+  .project-card {
+    flex: 0 0 30vw; min-width: 350px;
+    aspect-ratio: 16/10; position: relative;
+    border: 1px solid var(--border); background: rgba(0,0,0,0.2); padding: 15px; transition: 0.3s;
+  }
+  .project-card:hover { border-color: var(--white); }
+  .card-img-wrap { width: 100%; height: 100%; overflow: hidden; position: relative; }
+  .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.6s; }
+  .project-card:hover .card-img-wrap img { filter: grayscale(0%); }
+  .card-meta { position: absolute; top: 10px; left: 10px; background: var(--bg); padding: 4px 8px; border: 1px solid var(--border); font-family: 'Space Grotesk', monospace; font-size: 11px; z-index: 10; }
+
+  /* FOOTER */
+  footer { padding: 100px 0 60px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 15px; }
+  .social-link { color: var(--text-muted); font-size: 1.2rem; transition: 0.3s; margin-left: 1.5rem; }
+  .social-link:hover { color: var(--white); }
+
+  @media(max-width: 768px) {
+    .hero-statement { font-size: 2.5rem; }
+    .live-viewer { padding: 5px; }
+    .project-card { flex: 0 0 85vw; }
+  }
+</style>
+</head>
+<body>
+  <div class="math-grid"></div>
+  
+<header class="site-header">
+  <div class="ui container">
+    <div class="ui middle aligned unstackable grid">
+      <div class="eight wide column">
+        <div class="brand">
+          <img src="images/logo.svg" width="50px" alt="Vitro Logo">
+          <div class="brand-dot"></div>
+          <a href="/">VITRO MEDIA LAB</a>
+        </div>
+      </div>
+      <div class="eight wide column right aligned">
+        <nav>
+          <a href="/" class="nav-link-custom" style="margin-right: 20px;">Home</a>
+          <a href="/contact.html" class="nav-link-custom">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+  <section class="hero">
+    <div class="ui container">
+      <div class="hero-statement">
+        <span class="reveal stagger-1">Live <span class="rotator-wrapper"><span id="rotating-text" class="rotating-word">sessions</span></span></span><br>
+        <span class="reveal stagger-2">transmitted in clarity.</span>
+      </div>
+      
+      <div class="hero-sub reveal stagger-3">
+        <div class="hero-line"></div>
+        <span>Real-time technical logic and visual production.</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="scroll-section">
+    <div class="ui container" style="margin-bottom: 2.5rem;">
+        <div class="reveal active stagger-1">
+            <span class="tech-label reveal active stagger-1">Fig 1.0 — Live Transmission</span>
+            <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Current Stream</h2>
+        </div>
+
+      <div id="on-air-status" style="display: grid; align-items: center; gap: 10px; margin-bottom: 10px;">
+        <span class="blink-dot"></span> <span style="font-family: 'Space Grotesk'; font-weight: 700; font-size: 14px; letter-spacing: 0.1em; color: #ff4b2b;">ON AIR</span>
+      </div>
+    </div>
+
+    <div class="live-viewer reveal active">
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        
+        <div id="stream-container" class="player-aspect" style="display: none;">
+            <iframe 
+                id="live-iframe"
+                src="" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <div id="offline-container" class="player-aspect" style="background: rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+            <div style="opacity: 0.3; font-family: 'Space Grotesk';">
+                <i class="fas fa-satellite-dish" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                <h3 style="letter-spacing: 0.2em;">SIGNAL LOST</h3>
+                <p style="font-family: 'Inter'; text-transform: uppercase; font-size: 11px; margin-top: 10px;">Standby for Next Transmission</p>
+            </div>
+            <div style="position: absolute; inset: 0; background-image: radial-gradient(var(--border) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none; opacity: 0.2;"></div>
+        </div>
+    </div>
+</div>
+
+  <section class="scroll-section">
+    <div class="ui container" style="margin-bottom: 2.5rem;">
+      <span class="tech-label reveal stagger-1">Fig 2.0 — Broadcast Archive</span>
+      <div class="ui grid stackable middle aligned reveal stagger-2">
+        <div class="eight wide column">
+          <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Previous Sessions</h2>
+        </div>
+      </div>
+    </div>
+    
+    <div class="scroll-track">
+      <div class="project-card">
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/Gibson.png" alt="Archive">
+            <div class="card-meta">Production Session 04</div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/Coffee.png" alt="Archive">
+            <div class="card-meta">Design Logic Live</div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="corner-tl"></div><div class="corner-br"></div>
+        <div class="card-img-wrap">
+            <img src="images/MyoFlow.png" alt="Archive">
+            <div class="card-meta">Frontend Architecture</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ui container">
+      <div class="ui grid stackable reveal stagger-1">
+        <div class="twelve wide column reveal stagger-2">
+          <span class="tech-label">Fig 3.0 — Interaction</span>
+          <h2 class="" style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Collaborate in<br>real-time.</h2>
+        </div>
+        <div class="four wide column right aligned middle aligned">
+          <a href="/contact.html" class="ui button inverted basic" style="font-weight: 600; border-radius: 0;">Join the Lab</a>
+        </div>
+      </div>
+      
+      <div class="ui grid align-items-center pt-4" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="eight wide column mb-3 mb-md-0">
+          © <script>document.write(new Date().getFullYear())</script> Vitro Media Lab
+        </div>
+        <div class="eight wide column right aligned">
+          <a href="https://www.instagram.com/vitromedialab/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="mailto:hello@vitromedialab.com" target="_blank" class="social-link"><i class="fas fa-envelope"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  /**
+   * VITRO MEDIA LAB - CONSOLIDATED ENGINE
+   * Handles: Text Rotation, Scroll Reveal, and YouTube Live Status
+   */
+
+  // 1. CONFIGURATION (Update these with your actual info)
+  const YOUTUBE_API_KEY = 'AIzaSyAIB3QnWGpAi1Kjaf0uSmMwZpCLQxp585I'; 
+  const YOUTUBE_CHANNEL_ID = 'UCrgV0iX3imumy_mYG6kU-cQ'; 
+
+  // 2. ROTATING TEXT LOGIC
+  const rotatorWords = ["sessions", "broadcasts", "workflows", "narratives"];
+  let rotatorIndex = 0;
+  const textElement = document.getElementById("rotating-text");
+
+  function rotateWord() {
+    if (!textElement) return;
+    textElement.classList.remove("slide-in");
+    textElement.classList.add("slide-out");
+    setTimeout(() => {
+      rotatorIndex = (rotatorIndex + 1) % rotatorWords.length;
+      textElement.innerText = rotatorWords[rotatorIndex];
+      textElement.classList.remove("slide-out");
+      textElement.classList.add("slide-in");
+    }, 600);
+  }
+  if (textElement) setInterval(rotateWord, 3000);
+
+  // 3. SCROLL REVEAL LOGIC
+  const revealOptions = { threshold: 0.1, rootMargin: "0px" };
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('active');
+    });
+  }, revealOptions);
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  // 4. LIVE STREAM AUTO-CHECK LOGIC
+  async function checkLiveStatus() {
+    const statusEl = document.getElementById('on-air-status');
+    const streamContainer = document.getElementById('stream-container');
+    const offlineContainer = document.getElementById('offline-container');
+    const iframe = document.getElementById('live-iframe');
+
+    // Skip if elements aren't on this specific page
+    if (!streamContainer || !offlineContainer) return;
+
+    try {
+      const response = await fetch('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId='+YOUTUBE_CHANNEL_ID+'&type=video&eventType=live&key='+YOUTUBE_API_KEY);
+      const data = await response.json();
+
+      if (data.items && data.items.length > 0) {
+        // CHANNEL IS LIVE
+        const videoId = data.items[0].id.videoId;
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`;
+        
+        statusEl.style.display = 'flex';
+        streamContainer.style.display = 'block';
+        offlineContainer.style.display = 'none';
+      } else {
+        // CHANNEL IS OFFLINE
+        statusEl.style.display = 'none';
+        streamContainer.style.display = 'none';
+        offlineContainer.style.display = 'flex';
+        iframe.src = "";
+      }
+    } catch (error) {
+      console.warn("Live status check failed (likely API key missing):", error);
+      // Fallback to offline view
+      offlineContainer.style.display = 'flex';
+    }
+  }
+
+  // Run live check immediately and then every 5 minutes
+  checkLiveStatus();
+  setInterval(checkLiveStatus, 300000);
+</script>
+
+</body>
+</html>
