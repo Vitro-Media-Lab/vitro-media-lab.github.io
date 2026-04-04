@@ -1,0 +1,57 @@
+<footer>
+  <div class="ui container">
+    <div class="ui grid stackable mb-5 reveal stagger-1">
+      <div class="twelve wide column reveal stagger-2">
+        <span class="tech-label">{{ page.footer_label | default: "Fig 5.0 — Contact" }}</span>
+        <h2 style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital identity.</h2>
+      </div>
+      <div class="four wide column right aligned middle aligned">
+        {% unless page.hide_footer_cta %}<a href="/contact.html" class="ui button inverted basic" style="font-weight: 600; border-radius: 0;">Start a Project</a>{% endunless %}
+      </div>
+    </div>
+
+    <div class="ui grid align-items-center pt-4" style="border-top: 1px solid rgba(255,255,255,0.1);">
+      <div class="eight wide column mb-3 mb-md-0">
+        &copy; <script>document.write(new Date().getFullYear())</script> Vitro Media Lab
+      </div>
+      <div class="eight wide column right aligned">
+        <a href="https://www.instagram.com/vitromedialab/" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-instagram"></i></a>
+        <a href="mailto:hello@vitromedialab.com" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ROTATING TEXT ENGINE */
+  const words = ["websites", "photos", "artwork", "videos", "graphics"];
+  let currentIndex = 0;
+  const textElement = document.getElementById("rotating-text");
+
+  if (textElement) {
+    function rotateWord() {
+      textElement.classList.remove("slide-in");
+      textElement.classList.add("slide-out");
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % words.length;
+        textElement.innerText = words[currentIndex];
+        textElement.classList.remove("slide-out");
+        textElement.classList.add("slide-in");
+      }, 600);
+    }
+    setInterval(rotateWord, 3000);
+  }
+
+  /* SCROLL REVEAL ENGINE */
+  const observerOptions = { threshold: 0, rootMargin: "0px" };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('active');
+    });
+  }, observerOptions);
+  document.querySelectorAll('.reveal').forEach(el => {
+    if (!el.classList.contains('active')) {
+      observer.observe(el);
+    }
+  });
+</script>

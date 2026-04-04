@@ -1,0 +1,17 @@
+title: "Vitro Media Lab"
+description: "Digital architecture for brands requiring distinctiveness."
+url: "https://vitromedialab.github.io"
+
+# Build settings
+markdown: kramdown
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .bundle
+  - .git
+  - README.md
+  - live.html
