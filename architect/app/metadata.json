@@ -1,0 +1,10 @@
+{
+    "city": "GREATER LAFAYETTE",
+    "region": "TIPPECANOE COUNTY // INDIANA",
+    "lat": 40.41868158123326,
+    "lon": -86.89366766474085,
+    "radius": 5000,
+    "view_width": 8500.0,
+    "file_prefix": "GREATER_LAFAYETTE__TIPPECANOE_COUNTY__5000__",
+    "data_path": "cache/cities/GREATER_LAFAYETTE/"
+}
