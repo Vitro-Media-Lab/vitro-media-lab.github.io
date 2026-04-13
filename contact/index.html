@@ -196,8 +196,8 @@ hide_footer_cta: true
     /* GOOGLE APPS SCRIPT FORM SUBMISSION */
     const contactForm = document.getElementById("contact-form");
     
-    // Google Apps Script Web App URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3qUOF8QvclxicMseNG1nao9rRRMIf8EgQGTC7lbhqSaDVoojl2Szk2-45vk54fWEK0g/exec";
+    // Google Apps Script Web App URL - provided by user
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz2J3ckTsn539ZZT8PFV56xJofHbVhbvPH38odTJfjUmxxLKHCBgmiXezNccKi9usV0fA/exec";
 
     if (contactForm) {
       console.log('Contact form found, attaching submit handler');
@@ -215,37 +215,47 @@ hide_footer_cta: true
         // Convert FormData to URLSearchParams for reliable GAS handling
         const data = new URLSearchParams(new FormData(contactForm));
 
-        // mode: 'no-cors' is required because Google Apps Script redirects the response,
-        // which browsers often block as a CORS violation.
-        fetch(SCRIPT_URL, { method: "POST", body: data, mode: 'no-cors' })
+        // Try without 'no-cors' first to get proper error handling
+        // Google Apps Script needs to be deployed as "Web App" with "Anyone" access
+        fetch(SCRIPT_URL, {
+          method: "POST",
+          body: data,
+          // Don't use 'no-cors' so we can see actual errors
+          mode: 'cors',
+          redirect: 'follow'
+        })
           .then(response => {
-            // With 'no-cors', we get an opaque response (status 0). We assume success.
-            btn.classList.remove("loading");
-            btn.innerText = "Message Sent!";
-            // Use Semantic UI success classes
-            btn.classList.remove("inverted", "basic");
-            btn.classList.add("positive");
-            contactForm.reset();
-            
-            // Show success message using Semantic UI styles
-            const successMsg = document.createElement("div");
-            successMsg.className = "ui positive message";
-            successMsg.style.marginTop = "1rem";
-            successMsg.innerHTML = "<div class='header'>✓ Success!</div><p>Your message has been sent. We'll get back to you soon.</p>";
-            contactForm.appendChild(successMsg);
-            
-            // Remove message after 5 seconds
-            setTimeout(() => {
-              if (successMsg.parentNode) {
-                successMsg.remove();
-              }
-            }, 5000);
+            console.log('Response status:', response.status);
+            if (response.ok || response.status === 0 || response.status === 200) {
+              // Success - Google Apps Script often redirects, causing status 0
+              btn.classList.remove("loading");
+              btn.innerText = "Message Sent!";
+              btn.classList.remove("inverted", "basic");
+              btn.classList.add("positive");
+              contactForm.reset();
+              
+              // Show success message using Semantic UI styles
+              const successMsg = document.createElement("div");
+              successMsg.className = "ui positive message";
+              successMsg.style.marginTop = "1rem";
+              successMsg.innerHTML = "<div class='header'>✓ Success!</div><p>Your message has been sent. We'll get back to you soon.</p>";
+              contactForm.appendChild(successMsg);
+              
+              // Remove message after 5 seconds
+              setTimeout(() => {
+                if (successMsg.parentNode) {
+                  successMsg.remove();
+                }
+              }, 5000);
+            } else {
+              // HTTP error (404, 500, etc.)
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
           })
           .catch(error => {
-            console.error('Error!', error.message);
+            console.error('Fetch error:', error);
             btn.classList.remove("loading");
             btn.innerText = "Error - Try Again";
-            // Use Semantic UI error classes
             btn.classList.remove("inverted", "basic", "positive");
             btn.classList.add("negative");
             btn.disabled = false;
@@ -254,7 +264,7 @@ hide_footer_cta: true
             const errorMsg = document.createElement("div");
             errorMsg.className = "ui negative message";
             errorMsg.style.marginTop = "1rem";
-            errorMsg.innerHTML = "<div class='header'>✗ Error!</div><p>Failed to send message. Please email us directly at <a href='mailto:hello@vitromedialab.com'>hello@vitromedialab.com</a></p>";
+            errorMsg.innerHTML = `<div class='header'>✗ Error!</div><p>Failed to send message (${error.message}). Please email us directly at <a href='mailto:hello@vitromedialab.com'>hello@vitromedialab.com</a></p>`;
             contactForm.appendChild(errorMsg);
             
             // Remove message after 5 seconds
