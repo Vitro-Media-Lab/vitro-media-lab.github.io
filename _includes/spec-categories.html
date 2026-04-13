@@ -1,0 +1,78 @@
+<!-- Spec Categories Template -->
+<!-- Groups specs by category and renders them in category sections -->
+
+{% assign categories = "web,photo,restoration,print" | split: "," %}
+{% assign specs_by_category = site.specs | group_by: "category" | sort: "name" %}
+
+{% for category in categories %}
+  {% assign category_specs = specs_by_category | where: "name", category | first %}
+  
+  {% if category_specs %}
+  <section class="spec-category-section category-{{ category }}">
+    <div class="container">
+      <div class="category-header reveal stagger-1">
+        <span class="tech-label">Category {{ forloop.index }}.0 — {{ category | capitalize }}</span>
+        <h2 class="category-title">
+          {% case category %}
+            {% when "web" %}
+              Web Development & Design
+            {% when "photo" %}
+              Photography & Visual Storytelling
+            {% when "restoration" %}
+              Digital Restoration & Archival
+            {% when "print" %}
+              Print Design & Production
+            {% else %}
+              {{ category | capitalize }} Projects
+          {% endcase %}
+        </h2>
+        <p class="category-description">
+          {% case category %}
+            {% when "web" %}
+              Digital architecture, user experience, and technical implementation for web platforms.
+            {% when "photo" %}
+              Visual narratives captured through lens and light, from editorial to commercial.
+            {% when "restoration" %}
+              Preservation and enhancement of historical media through digital techniques.
+            {% when "print" %}
+              Tangible design solutions for publications, branding, and physical media.
+            {% else %}
+              Collection of projects in this category.
+          {% endcase %}
+        </p>
+      </div>
+      
+      <div class="directory-grid">
+        {% for spec in category_specs.items %}
+        <a href="{{ spec.url }}" class="dir-card spec-card reveal stagger-{{ forloop.index | plus: 1 }}">
+          <div class="card-content">
+            <div class="card-meta">
+              <span class="spec-client">{{ spec.client }}</span>
+              <span class="status-badge {% if spec.status == 'live' %}outline{% endif %}">{{ spec.status }}</span>
+            </div>
+            <h2>{{ spec.title }}</h2>
+            <p>{{ spec.role }} • {{ spec.stack }} • {{ spec.year }}</p>
+          </div>
+          <div class="card-cta">
+            <span>View Spec Sheet</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+{% endfor %}
+
+{% if specs_by_category.size == 0 %}
+<section class="spec-category-section">
+  <div class="container">
+    <div class="category-header">
+      <span class="tech-label">Category 0.0 — No Specs</span>
+      <h2 class="category-title">No Spec Sheets Available</h2>
+      <p class="category-description">Spec sheets will appear here once added to the _specs collection.</p>
+    </div>
+  </div>
+</section>
+{% endif %}

@@ -1,24 +1,29 @@
 <footer>
-  <div class="ui container">
-    <div class="ui grid stackable mb-5 reveal stagger-1">
-      <div class="twelve wide column reveal stagger-2">
+  <div class="container">
+    
+    <div class="footer-cta reveal stagger-1">
+      <div class="cta-text reveal stagger-2">
         <span class="tech-label">{{ page.footer_label | default: "Fig 5.0 — Contact" }}</span>
-        <h2 style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital identity.</h2>
+        <h2 class="footer-heading">Let's build your<br>digital identity.</h2>
       </div>
-      <div class="four wide column right aligned middle aligned">
-        {% unless page.hide_footer_cta %}<a href="/contact.html" class="ui button inverted basic" style="font-weight: 600; border-radius: 0;">Start a Project</a>{% endunless %}
+      <div class="cta-action reveal stagger-3">
+        {% unless page.hide_footer_cta %}
+        <a href="{{ '/contact/' | relative_url }}" class="btn-primary">Start a Project</a>
+        {% endunless %}
       </div>
     </div>
 
-    <div class="ui grid align-items-center pt-4" style="border-top: 1px solid rgba(255,255,255,0.1);">
-      <div class="eight wide column mb-3 mb-md-0">
+    <div class="footer-bottom">
+      <div class="copyright">
         &copy; <script>document.write(new Date().getFullYear())</script> Vitro Media Lab
       </div>
-      <div class="eight wide column right aligned">
-        <a href="https://www.instagram.com/vitromedialab/" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-instagram"></i></a>
-        <a href="mailto:hello@vitromedialab.com" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fas fa-envelope"></i></a>
+      <div class="socials">
+        <a href="https://www.facebook.com/vitromedialab" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/vitromedialab/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="mailto:hello@vitromedialab.com" target="_blank" class="social-link"><i class="fas fa-envelope"></i></a>
       </div>
     </div>
+
   </div>
 </footer>
 
@@ -54,4 +59,18 @@
       observer.observe(el);
     }
   });
+
+  /* DYNAMIC FIGURE NUMBER */
+  const sections = document.querySelectorAll('section');
+  const directoryHeaders = document.querySelectorAll('div.directory-header');
+  const directoryGrids = document.querySelectorAll('div.directory-grid');
+  const sectionCount = sections.length + directoryHeaders.length + directoryGrids.length;
+  const footerLabel = document.querySelector('footer .tech-label');
+  if (footerLabel) {
+    const currentText = footerLabel.textContent;
+    // Match "Fig X.0 — Something" pattern
+    const match = currentText.match(/^Fig \d+\.0 — (.+)$/);
+    const suffix = match ? match[1] : 'Contact';
+    footerLabel.textContent = `Fig ${sectionCount}.0 — ${suffix}`;
+  }
 </script>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vitro Omni-Engine // Beta 1.2</title>
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js",
+            "three/examples/jsm/controls/OrbitControls.js":         "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/controls/OrbitControls.js",
+            "three/examples/jsm/loaders/GLTFLoader.js":             "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js",
+            "three/examples/jsm/loaders/DRACOLoader.js":            "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/DRACOLoader.js",
+            "three/examples/jsm/utils/BufferGeometryUtils.js":      "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/utils/BufferGeometryUtils.js",
+            "three/examples/jsm/lines/LineSegmentsGeometry.js":     "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/lines/LineSegmentsGeometry.js",
+            "three/examples/jsm/lines/LineMaterial.js":             "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/lines/LineMaterial.js",
+            "three/examples/jsm/lines/LineSegments2.js":            "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/lines/LineSegments2.js",
+            "three/examples/jsm/csm/CSM.js":                        "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/csm/CSM.js",
+            "three/examples/jsm/csm/CSMShader.js":                  "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/csm/CSMShader.js",
+            "three/examples/jsm/csm/Frustum.js":                    "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/csm/Frustum.js",
+            "three/examples/jsm/libs/stats.module.js":              "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/libs/stats.module.js"
+        }
+    }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --accent: #00ffcc; 
+            --bg: #fdfdfb; 
+            --panel: #111111; 
+            --border: #222222; 
+            --text: #888888; 
+            --text-light: #cccccc;
+            --ui-font: 'Montserrat', sans-serif;
+            --header-font: 'Libre Baskerville', serif;
+        }
+
+        body {
+            margin: 0; padding: 0; background-color: var(--bg); display: flex;
+            flex-direction: column;
+            height: 100vh; width: 100vw; overflow: hidden;
+            font-family: var(--ui-font); color: var(--text);
+        }
+        
+        #sidebar {
+            height: 80px; min-height: 80px; background-color: var(--panel);
+            border-top: 1px solid var(--border); display: flex;
+            padding: 0 30px; box-sizing: border-box; z-index: 100; overflow-x: auto;
+            box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.9);
+            align-items: center;
+            gap: 40px;
+        }
+
+        #sidebar::-webkit-scrollbar { height: 6px; }
+        #sidebar::-webkit-scrollbar-thumb { background-color: #333333; border-radius: 3px; }
+
+        .brand-header { color: #ffffff; font-size: 24px; font-weight: 700; letter-spacing: 8px; margin-bottom: 5px; text-transform: uppercase; }
+        .status-tag { color: var(--accent); font-size: 10px; letter-spacing: 3px; margin-bottom: 35px; font-weight: 700; text-transform: uppercase; }
+        .panel-section { margin-bottom: 40px; }
+        .panel-title { color: #666666; font-size: 10px; letter-spacing: 3px; margin-top: 0; margin-bottom: 20px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #333333; padding-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; transition: color 0.2s; }
+        .panel-title:hover { color: #999999; }
+        .panel-title::after { content: '▾'; font-size: 12px; transition: transform 0.25s ease; }
+        .panel-section.collapsed .panel-title::after { transform: rotate(-90deg); }
+        .panel-section.collapsed .panel-content { display: none; }
+
+        select, button {
+            background-color: #1a1a1a; color: #aaaaaa; border: 1px solid #333333;
+            padding: 10px 20px; cursor: pointer;
+            font-size: 9px; font-family: var(--ui-font); font-weight: 400;
+            text-transform: uppercase; transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border-radius: 2px; letter-spacing: 1.5px; outline: none;
+            white-space: nowrap;
+        }
+
+        select:hover, button:hover { background-color: #222222; color: #ffffff; border-color: #555555; }
+        button.active { background-color: #ffffff; color: #000000; font-weight: 700; border-color: #ffffff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.15); }
+        button.hero-toggle { background-color: rgba(0, 255, 204, 0.05); color: var(--accent); border: 1px solid var(--accent); font-weight: 700; }
+        button.hero-toggle.active { background-color: var(--accent); color: #000000; box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); }
+        
+        .upload-btn { display: block; background-color: rgba(255, 255, 255, 0.05); color: #ffffff; border: 1px dashed #555555; padding: 14px; text-align: center; cursor: pointer; margin-bottom: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.2s; border-radius: 2px; }
+        .upload-btn:hover { background-color: #ffffff; color: #000000; }
+
+        #export-btn-master { margin-top: 25px; border: 1.5px solid var(--accent); color: var(--accent); background-color: rgba(0, 255, 204, 0.05); font-weight: 700; letter-spacing: 2px; padding: 18px; }
+        #export-btn-master:hover { background-color: var(--accent); color: #000000; box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); }
+
+        .slider-group { margin-bottom: 25px; }
+        .slider-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 300; }
+        
+        input[type=range] { width: 100%; cursor: pointer; background-color: #2a2a2a; height: 4px; appearance: none; -webkit-appearance: none; outline: none; border-radius: 2px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; background-color: #ffffff; border-radius: 50%; transition: transform 0.1s ease; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.4); background-color: var(--accent); }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
+
+        #canvas-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: center; background-color: #050505; position: relative; perspective: 1000px; overflow: hidden; }
+        #poster { position: relative; background-color: #fdfdfb; overflow: hidden; box-shadow: 0 30px 100px rgba(0, 0, 0, 1.0); transition: width 0.4s ease, height 0.4s ease; }
+        
+        #grid-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 4; display: none; background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255, 255, 255, 0.03) 20px, rgba(255, 255, 255, 0.03) 21px); }
+
+        #vitro-header {
+            position: absolute; top: 6%; left: 50%; transform: translateX(-50%); width: 60%;
+            background-color: var(--bg); border: 2px solid #111111; outline: 1px solid #111111; outline-offset: -8px;
+            padding: 40px 30px; text-align: center; color: #111111; box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.15); z-index: 10; transition: opacity 0.4s ease;
+        }
+
+        #h-title { font-family: var(--header-font); font-size: clamp(24px, 3vw, 42px); letter-spacing: 0.30em; margin: 0; text-transform: uppercase; font-weight: 700; }
+        #h-sub { font-family: var(--ui-font); font-size: 12px; letter-spacing: 8px; margin-top: 15px; margin-bottom: 0; text-transform: uppercase; opacity: 0.85; font-weight: 400; }
+        #h-gps { font-family: var(--ui-font); font-size: 9px; letter-spacing: 4px; margin-top: 12px; margin-bottom: 0; opacity: 0.5; font-weight: 700; }
+        
+    </style>
+</head>
+<body>
+
+<style>
+@keyframes vitro-spin {
+    to { transform: rotate(360deg); }
+}
+</style>
+<div id="vitro-loader" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0a0a0a; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-family: 'Montserrat', sans-serif; transition: opacity 0.6s ease; gap: 0;">
+    <!-- Spinner -->
+    <div style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid #1f1f1f; border-top: 2px solid #ffffff; animation: vitro-spin 0.9s linear infinite; margin-bottom: 32px;"></div>
+    <!-- Title -->
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 5px; color: #ffffff; margin-bottom: 24px; text-transform: uppercase;">Vitro Omni-Engine</div>
+    <!-- Progress bar -->
+    <div style="width: 220px; height: 1px; background: #2a2a2a; margin-bottom: 16px; position: relative; overflow: visible;">
+        <div id="vitro-loader-bar" style="height: 100%; width: 0%; background: #ffffff; transition: width 0.25s ease;"></div>
+    </div>
+    <!-- Layer counter + name row -->
+    <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;">
+        <span id="vitro-loader-counter" style="font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #ffffff; font-variant-numeric: tabular-nums;">0 / 8</span>
+        <span style="width: 1px; height: 10px; background: #333; display: inline-block; vertical-align: middle;"></span>
+        <span id="vitro-loader-text" style="font-size: 10px; letter-spacing: 2px; color: #555; text-transform: uppercase;">Initializing</span>
+    </div>
+    <!-- Percentage -->
+    <div id="vitro-loader-pct" style="font-size: 9px; letter-spacing: 2px; color: #333; margin-top: 4px;">0%</div>
+</div>
+
+<div id="canvas-wrapper">
+    <div id="poster">
+        <div id="grid-overlay"></div>
+        <div id="three-canvas"></div>
+    </div>
+</div>
+
+<div id="sidebar">
+    <div style="display: flex; align-items: center; gap: 20px; min-width: 300px;">
+        <div class="brand-header" style="font-size: 18px; letter-spacing: 4px; margin: 0;">VITRO OMNI-ENGINE</div>
+        <div class="status-tag" style="font-size: 8px; letter-spacing: 2px; margin: 0;">BETA 1.2 // DEMO</div>
+    </div>
+
+    <!-- Player Engine Controls -->
+    <div style="display: flex; align-items: center; gap: 15px; flex-grow: 1; justify-content: center;">
+        <button id="btnTogglePlayer" class="player-toggle" style="margin: 0; padding: 10px 20px; font-size: 9px; min-width: 160px;">PLAYER MODE: OFF (Get Close To Map)</button>
+        <button id="btnFlyMode" style="margin: 0; padding: 10px 20px; font-size: 9px; min-width: 200px;">Fly Mode: OFF</button>
+        <input type="range" id="sldTime" min="0" max="24" step="0.05" value="15.5" hidden>
+        <span id="vTime" style="display: none;">15:30</span
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 20px; min-width: 300px; justify-content: flex-end;">
+        <div style="font-size: 8px; letter-spacing: 1px; color: #888888; text-transform: uppercase;">
+            Powered by <a href="https://www.vitromedialab.com/" target="_blank" style="color: #ffffff; text-decoration: none;">Vitro Media Lab</a>
+        </div>
+        <div style="font-size: 7px; letter-spacing: 1px; color: #666666; text-transform: uppercase;">
+            Data ©
+            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" style="color: #00ffcc; text-decoration: none;">OSM</a> |
+            <a href="https://overturemaps.org/" target="_blank" rel="noopener noreferrer" style="color: #00ffcc; text-decoration: none;">Overture</a> |
+            <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener noreferrer" style="color: #00ffcc; text-decoration: none;">AWS</a>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="./main.js"></script>
+</body>
+</html>

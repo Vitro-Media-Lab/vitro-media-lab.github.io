@@ -1,0 +1,16 @@
+<!-- Service Row Component -->
+<div class="service-row reveal stagger-{{ include.stagger | default: 3 }}">
+  <div class="ui middle aligned grid stackable">
+    <div class="five wide column">
+      <h3 class="ui header">
+        {% if include.icon %}
+        <i class="{{ include.icon }} service-icon"></i>
+        {% endif %}
+        {{ include.title }}
+      </h3>
+    </div>
+    <div class="eleven wide column">
+      <p>{{ include.description }}</p>
+    </div>
+  </div>
+</div>

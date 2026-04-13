@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% include head.html %}
+  <style>
+    :root {
+      --accent-color: var(--orange);
+    }
+    .spec-header {
+      border-left: 4px solid var(--orange);
+    }
+  </style>
+</head>
+<body class="spec-page spec-category-web">
+
+  {% include header.html %}
+
+  <main class="spec-container">
+    <div class="spec-header">
+      <span class="tech-label">Web Development/Design/Marketing</span>
+    </div>
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
+
+</body>
+</html>

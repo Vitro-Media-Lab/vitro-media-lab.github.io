@@ -15,3 +15,26 @@ exclude:
   - .git
   - README.md
   - live.html
+
+# Custom collections
+collections:
+  specs:
+    output: true
+    permalink: /spec/:path
+  photographers:
+    output: true
+    permalink: /featured/:path
+
+# Default front‑matter for collections
+defaults:
+  - scope:
+      path: ""
+      type: "specs"
+    values:
+      layout: "spec"
+      category: "web"
+  - scope:
+      path: ""
+      type: "photographers"
+    values:
+      layout: "photographer"

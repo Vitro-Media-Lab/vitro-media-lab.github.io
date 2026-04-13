@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% include head.html %}
+  <style>
+    :root {
+      --accent-color: var(--green);
+    }
+    .spec-header {
+      border-left: 4px solid var(--green);
+    }
+  </style>
+</head>
+<body class="spec-page spec-category-photo">
+
+  {% include header.html %}
+
+  <main class="spec-container">
+    <div class="spec-header">
+      <span class="tech-label">Photography/Weddings/Shows/Video</span>
+    </div>
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
+
+</body>
+</html>

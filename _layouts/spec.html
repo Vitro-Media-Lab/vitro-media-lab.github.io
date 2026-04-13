@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% include head.html %}
+  {% if page.category == "web" %}
+    <style>
+      :root {
+        --accent-color: var(--orange);
+      }
+    </style>
+  {% elsif page.category == "photo" %}
+    <style>
+      :root {
+        --accent-color: var(--green);
+      }
+    </style>
+  {% elsif page.category == "restoration" %}
+    <style>
+      :root {
+        --accent-color: var(--blush);
+      }
+    </style>
+  {% elsif page.category == "print" %}
+    <style>
+      :root {
+        --accent-color: var(--navy);
+      }
+    </style>
+  {% endif %}
+</head>
+<body class="spec-page">
+
+  {% include header.html %}
+
+  <main class="spec-container">
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
+
+</body>
+</html>

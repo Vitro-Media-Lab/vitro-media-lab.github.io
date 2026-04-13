@@ -3,13 +3,12 @@
 <head>
   <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Vitro Media Lab — Clarity by Design</title>
+<title>Vitro Media Lab | System Directory</title>
 
 
 <meta name="description" content="Digital architecture for brands requiring distinctiveness.">
 
 
-<!-- Favicons -->
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="shortcut icon" href="/favicon.ico" />
@@ -17,512 +16,607 @@
 <meta name="apple-mobile-web-app-title" content="Vitro Media Lab" />
 <link rel="manifest" href="/site.webmanifest" />
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
-<!-- Semantic UI & Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
 <style>
-  :root{
-    /* RAW PALETTE */
-    --bg: #050505;
-    --surface: rgba(255, 255, 255, 0.03);
-    --white: #ffffff;
-    --dim: rgba(255, 255, 255, 0.4);
-    --border: rgba(255, 255, 255, 0.15);
+/* --- GLOBAL RESETS --- */
+*, *::before, *::after { box-sizing: border-box; } 
 
-    /* YOUR PALETTE */
-    --navy: #2D364D;
-    --blush: #F2D4CA;
-    --orange: #D37250;
-    --green: #5F9857;
-    --olive: #696954;
-    --grey: #3E3E3E;
-    --black: #0F1219;
+:root {
+  /* THE STARK PALETTE */
+  --bg: #030508; /* Abyss black with a microscopic hint of your navy */
+  --white: #ffffff;
+  --dim: rgba(255, 255, 255, 0.6);
+  --border-faint: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(255, 255, 255, 0.25);
+  
+  --blue: #1F2C49; /* Primary brand blue from logo */
+  --blue-light: #3A4C7A;
+  --blue-glow: rgba(31, 44, 73, 0.15);
+  
+  --orange: #D37250; /* Secondary accent */
+  --orange-glow: rgba(211, 114, 80, 0.15);
 
-    --text-main: var(--white);
-    --text-muted: var(--dim);
+  --text-main: var(--white);
+  --text-muted: var(--dim);
+}
+
+html { scroll-behavior: smooth; background: var(--bg); }
+
+/* --- 1. THE VOID BACKGROUND --- */
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px; 
+  background-color: var(--bg);
+  color: var(--text-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+.container { width: 100%; max-width: 1360px; margin: 0 auto; padding: 0 5vw; }
+
+h1, h2, h3, .h1, .h2, .h3 { 
+  /* font-family: 'Space Grotesk', sans-serif;  */
+  font-weight: 600; 
+  margin: 0; line-height: 1.1; letter-spacing: -0.04em; 
+  text-transform: uppercase; color: var(--white); 
+}
+a { text-decoration: none; color: inherit; transition: 0.3s ease; }
+
+/* --- 2. HYPER-FINE BLUEPRINT GRID --- */
+.math-grid { position: fixed; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
+.math-grid::before {
+  content: ''; position: absolute; inset: -50%;
+  background-image:
+    linear-gradient(to right, rgba(31,44,73,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(31,44,73,0.05) 1px, transparent 1px);
+  background-size: 40px 40px; /* Tighter, sharper tech grid */
+  mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 70%);
+}
+
+/* --- HEADER --- */
+.site-header {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 1360px; z-index: 100;
+  background: rgba(3, 5, 8, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-faint);
+  border-radius: 0px;
+}
+
+.header-inner { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; }
+.brand { font-weight: 700; font-size: 16px; letter-spacing: 0.05em; display: flex; gap: 12px; align-items: center; color: var(--white); }
+.brand-text:hover { color: var(--blue-light); transition: all 0.3s; }
+.brand-logo { width: 34px; height: auto; }
+.brand-dot { width: 6px; height: 6px; background: var(--orange); animation: blink 3s infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+.site-nav { display: flex; gap: 24px; align-items: center; }
+.nav-link-custom { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); transition: color 0.3s ease; }
+.nav-link-custom:hover { color: var(--blue-light); }
+
+.btn-nav {
+  display: inline-block; padding: 10px 22px; background: transparent; color: var(--blue); border: 1px solid var(--blue); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 2px; transition: all 0.3s ease;
+}
+.btn-nav:hover { background: var(--blue); color: var(--bg); }
+
+@media(max-width: 600px) {
+  .site-header { top: 10px; width: calc(100% - 20px); border-radius: 0px; }
+  .header-inner { padding: 12px 20px; }
+  .brand-text, .hide-mobile { display: none; }
+  .site-nav { gap: 20px; }
+}
+
+/* --- DIRECTORY LAYOUT --- */
+.sys-directory { min-height: 100vh; padding: 160px 0 100px 0; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+.directory-header { margin-bottom: 70px; text-align: left; }
+
+.tech-label { font-family: monospace; font-size: 12px; letter-spacing: 0.1em; color: var(--blue-light); text-transform: uppercase; margin-bottom: 20px; display: block; font-weight: 600; }
+.tech-label::before { content: '>'; margin-right: 8px; color: var(--orange); opacity: 0.8; }
+
+.hero-statement { font-size: clamp(3rem, 6vw, 5.5rem); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 20px; text-shadow: 0 0 40px var(--blue-glow); }
+.hero-sub { font-size: 1.1rem; color: var(--text-muted); display: flex; gap: 20px; align-items: center; max-width: 600px; }
+.hero-line { height: 2px; width: 60px; background: var(--orange); border-radius: 1px; }
+
+.directory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; }
+
+/* --- 3. STARK, HOLLOW WIREFRAME CARDS --- */
+.dir-card {
+  position: relative;
+  background: transparent;
+  padding: 40px 35px; display: flex; flex-direction: column; justify-content: space-between;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--border-faint);
+  border-radius: 0px;
+}
+
+/* Technical Corner Marks Restored & Sharpened */
+.dir-card::before, .dir-card::after {
+  content: ''; position: absolute; width: 8px; height: 8px; border: 0 solid var(--border-active); transition: all 0.4s ease;
+}
+.dir-card::before { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
+.dir-card::after { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
+
+.dir-card:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: var(--blue-light);
+  transform: translateY(-4px);
+}
+.dir-card:hover::before, .dir-card:hover::after {
+  width: 16px; height: 16px; border-color: var(--orange);
+}
+
+.card-content { margin-bottom: 40px; }
+.card-meta { font-family: monospace; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin-bottom: 25px; display: flex; align-items: center; transition: color 0.3s; }
+
+.status-badge { margin-left: auto; padding: 3px 6px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-faint); font-size: 10px; color: var(--white); }
+.status-badge.outline { background: transparent; border-color: var(--blue-light); color: var(--blue-light); }
+
+.dir-card h2 { margin-bottom: 12px; font-size: 1.7rem; transition: color 0.3s; }
+.dir-card p { margin: 0; color: var(--dim); font-size: 0.95rem; line-height: 1.6; transition: color 0.3s; }
+
+.card-cta { display: flex; justify-content: space-between; align-items: center; font-family: monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); border-top: 1px solid var(--border-faint); padding-top: 20px; transition: color 0.3s ease; }
+.arrow { font-size: 16px; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.dir-card:hover h2 { color: var(--white); }
+.dir-card:hover p { color: rgba(255,255,255,0.7); }
+.dir-card:hover .card-meta { color: var(--blue-light); }
+.dir-card:hover .card-cta { color: var(--blue-light); border-top-color: rgba(31, 44, 73, 0.5); }
+.dir-card:hover .arrow { transform: translateX(6px); color: var(--orange); }
+
+.highlight-card .accent { color: var(--blue-light); }
+.highlight-card .accent-cta { color: var(--blue-light); }
+
+/* --- FOOTER --- */
+footer { padding: 100px 0 50px; margin-top: 60px; position: relative; z-index: 10; border-top: 1px solid var(--border-faint); }
+.footer-cta { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 80px; gap: 40px; flex-wrap: wrap; }
+.footer-heading { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.05; margin: 0; }
+.btn-primary {
+  display: inline-block;
+  padding: 16px 32px;
+  background: var(--white);
+  color: var(--bg);
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 2px;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--white);
+  border-color: var(--white);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+}
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 30px; border-top: 1px solid var(--border-faint); font-family: monospace; font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; }
+.socials { display: flex; gap: 24px; font-size: 16px; }
+.socials a:hover { color: var(--blue-light); transition: all 0.3s; }
+
+@media(max-width: 768px) {
+  .hero-statement { font-size: clamp(2.5rem, 8vw, 3.5rem); }
+  .sys-directory { padding-top: 120px; }
+  .dir-card { padding: 30px 25px; }
+  .footer-cta { flex-direction: column; align-items: flex-start; }
+  .btn-primary { width: 100%; text-align: center; }
+}
+/* --- REVEAL ANIMATIONS --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- PAGE SECTIONS --- */
+.section {
+  padding: 100px 0;
+  position: relative;
+}
+
+.scroll-section {
+  padding: 100px 0;
+  overflow-x: visible;
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--border-faint);
+}
+
+.scroll-section-no-gradiant {
+  padding: 100px 0;
+  overflow-x: visible;
+  position: relative;
+  z-index: 2;
+}
+
+.scroll-track {
+  display: flex;
+  gap: 24px;
+  padding: 10px 40px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- PROJECT CARD --- */
+.project-card {
+  flex: 0 0 30vw;
+  min-width: 350px;
+  aspect-ratio: 16/10;
+  position: relative;
+  border: 1px solid var(--border-faint);
+  background: transparent;
+  padding: 15px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:hover {
+  border-color: var(--blue-light);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.card-img-wrap {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: 0.6s;
+}
+
+.project-card:hover .card-img-wrap img {
+  filter: grayscale(0%);
+}
+
+.project-card .card-meta {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--bg);
+  padding: 4px 8px;
+  border: 1px solid var(--border-faint);
+  font-family: monospace;
+  font-size: 11px;
+  z-index: 10;
+}
+
+/* --- CORNER MARKS --- */
+.corner-tl {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 8px;
+  height: 8px;
+  border: 0 solid var(--border-active);
+  border-top-width: 1px;
+  border-left-width: 1px;
+  transition: all 0.4s ease;
+}
+
+.corner-br {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border: 0 solid var(--border-active);
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+  transition: all 0.4s ease;
+}
+
+.project-card:hover .corner-tl,
+.project-card:hover .corner-br {
+  width: 16px;
+  height: 16px;
+  border-color: var(--orange);
+}
+
+/* --- SERVICES --- */
+.services {
+  padding: 100px 0;
+}
+
+.service-row {
+  margin-bottom: 3rem;
+}
+
+.service-icon {
+  color: var(--orange);
+  margin-right: 12px;
+}
+
+/* --- PROCESS STEPS --- */
+.process {
+  padding: 100px 0;
+}
+
+.process-step {
+  text-align: center;
+  padding: 2rem;
+  border: 1px solid var(--border-faint);
+  background: rgba(255,255,255,0.02);
+  transition: 0.3s;
+}
+
+.process-step:hover {
+  border-color: var(--blue-light);
+  background: rgba(31,44,73,0.1);
+}
+
+.process-icon {
+  font-size: 2.5rem;
+  color: var(--orange);
+  margin-bottom: 1.5rem;
+}
+
+/* --- CTA SECTION --- */
+.cta {
+  padding: 100px 0;
+  text-align: center;
+}
+
+/* --- ROTATING TEXT ANIMATION --- */
+.slide-out {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.slide-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.rotating-word {
+  color: var(--orange);
+}
+
+/* --- STRIPE BUY BUTTONS GRID --- */
+.stripe-button-wrapper {
+  position: relative;
+  background: transparent;
+  padding: 30px;
+  border: 1px solid var(--border-faint);
+  border-radius: 0px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  height: 100%;
+}
+
+/* Technical Corner Marks */
+.stripe-button-wrapper::before,
+.stripe-button-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 0 solid var(--border-active);
+  transition: all 0.4s ease;
+}
+.stripe-button-wrapper::before {
+  top: -1px;
+  left: -1px;
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+.stripe-button-wrapper::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+}
+
+.stripe-button-wrapper:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: var(--blue-light);
+  transform: translateY(-4px);
+}
+.stripe-button-wrapper:hover::before,
+.stripe-button-wrapper:hover::after {
+  width: 16px;
+  height: 16px;
+  border-color: var(--orange);
+}
+
+/* Ensure Stripe buttons scale properly */
+.stripe-button-wrapper stripe-buy-button {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* Product info styling */
+.product-info {
+  margin-top: 20px;
+  text-align: center;
+}
+.product-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.product-description {
+  font-size: 0.9rem;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+/* Responsive adjustments for Semantic UI grid */
+@media (max-width: 768px) {
+  .stripe-button-wrapper {
+    padding: 24px;
+    min-height: 180px;
   }
+}
 
-  html { scroll-behavior: smooth; }
-
-  body{
-    font-family: 'Inter', sans-serif;
-    font-size: 17px;
-    background: var(--navy);
-    color: var(--text-main);
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  /* MATH PIXEL GRID */
-  .math-grid {
-    position: fixed; inset: 0; z-index: -2; pointer-events: none;
-    overflow: hidden;
-  }
-  .math-grid::before {
-    content: ''; position: absolute; inset: -100%;
-    background-image:
-      linear-gradient(to right, var(--border) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-    background-size: 80px 80px;
-    opacity: 0.25;
-    mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
-    -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 60%);
-  }
-
-  /* TYPOGRAPHY */
-  h1, h2, h3, .h1, .h2, .h3, .ui.header { font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin: 0; line-height: 1.0; letter-spacing: -0.04em; text-transform: uppercase; color: var(--white); }
-  a { text-decoration: none; color: inherit; transition: 0.3s; }
-  a:hover { color: var(--blush); }
-
-
-  /* HEADER */
-  .site-header{
-    position:fixed; top:20px; left:50%; transform: translateX(-50%);
-    width: calc(100% - 40px); max-width: 1360px;
-    z-index:100;
-    padding: 16px 0;
-    background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 4px;
-  }
-
-  .brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.05em; display:flex; gap:10px; align-items:center; color: var(--white); }
-  .brand-dot { width: 6px; height: 6px; background: var(--orange); animation: blink 3s infinite; }
-  @keyframes blink { 30% { opacity: 0; } }
-
-  .nav-link-custom { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); opacity: 0.7; display: inline-block; }
-  .nav-link-custom:hover { opacity: 1; color: var(--white); }
-
-  /* HERO */
-  .hero{
-    min-height: 95vh;
-    display: flex; flex-direction: column; justify-content: center;
-    position: relative;
-    z-index: 1;
-    padding-top: 120px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .hero-statement {
-    font-size: clamp(3.5rem, 9vw, 8rem);
-    letter-spacing: -0.03em;
-  }
-  .hero-statement .reveal { display: inline-block; }
-
-  /* ROTATOR STYLES */
-  .rotator-wrapper {
-    display: inline-flex; flex-direction: column;
-    color: var(--dim); font-style: normal; text-decoration: line-through;
-  }
-  .rotating-word { display: block; transform-origin: left; }
-
-  /* ANIMATIONS */
-  .slide-out { animation: slideOut .5s cubic-bezier(0.8, 0, 0.2, 1) forwards; }
-  .slide-in { animation: slideIn .7s cubic-bezier(0.8, 0, 0.2, 1) forwards; }
-  @keyframes slideOut { to { transform: translateY(-100%) skewY(5deg); opacity: 0; } }
-  @keyframes slideIn { from { transform: translateY(100%) skewY(5deg); opacity: 0; } to { transform: translateY(0) skewY(0deg); opacity: 1; } }
-
-  .hero-sub {
-    margin-top: 40px;
-    margin-bottom: 40px;
-    font-size: 1.3rem; color: var(--text-muted);
-    display: flex; gap: 20px; align-items: center;
-    font-family: 'Space Grotesk', monospace;
-  }
-  .hero-line { height: 1px; width: 60px; background: var(--orange); }
-
-  /* MOTION REVEAL */
-  .reveal {
-      opacity: 0;
-      -webkit-clip-path: inset(100% 0 0 0);
-      clip-path: inset(100% 0 0 0);
-      transform: translateY(20px);
-      transition: all 1s cubic-bezier(0.1, 0.9, 0.2, 1);
-  }
-  .reveal.active {
-      opacity: 1;
-      -webkit-clip-path: inset(0 0 0 0);
-      clip-path: inset(0 0 0 0);
-      transform: translateY(0);
-  }
-
-  .reveal.active.stagger-1 { transition-delay: 0.1s; }
-  .reveal.active.stagger-2 { transition-delay: 0.2s; }
-  .reveal.active.stagger-3 { transition-delay: 0.3s; }
-  .reveal.active.stagger-4 { transition-delay: 0.4s; }
-  .reveal.active.stagger-5 { transition-delay: 0.5s; }
-  .reveal.active.stagger-6 { transition-delay: 0.6s; }
-  .reveal.active.stagger-7 { transition-delay: 0.7s; }
-
-  /* TECHNICAL LABELS */
-  .tech-label {
-    font-family: 'Space Grotesk', monospace;
-    font-size: 14px; letter-spacing: 0.1em; color: var(--dim);
-    text-transform: uppercase;
-    margin-bottom: 10px; display: block;
-  }
-  .tech-label::before { content: '['; margin-right: 5px; color: var(--border); }
-  .tech-label::after { content: ']'; margin-left: 5px; color: var(--border); }
-
-  /* HORIZONTAL SCROLL SECTION */
-  .scroll-section {
-    padding: 100px 0;
-    overflow-x: hidden;
-    position: relative; z-index: 2;
-    border-bottom: 1px solid var(--border);
-    border-top: 1px solid var(--border);
-  }
- .scroll-section-no-gradiant {
-    padding: 100px 0;
-    overflow-x: hidden;
-    position: relative; z-index: 2;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .scroll-track {
-    display: flex; gap: 24px;
-    padding: 10px 40px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .scroll-track::-webkit-scrollbar { display: none; }
-
-  /* CARD STYLING (BLUEPRINT) */
-  .project-card {
-    flex: 0 0 35vw; min-width: 400px;
-    aspect-ratio: 16/10;
-    position: relative;
-    border: 1px solid var(--border);
-    background: rgba(0,0,0,0.2);
-    padding: 20px;
-    transition: border-color 0.3s;
-  }
-  .project-card:hover {
-    border-color: var(--white);
-    z-index: 5;
-  }
-
-  /* Corner Marks Logic */
-  .corner-tl { position: absolute; top: -1px; left: -1px; width: 10px; height: 10px; border-top: 1px solid var(--white); border-left: 1px solid var(--white); }
-  .corner-br { position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px; border-bottom: 1px solid var(--white); border-right: 1px solid var(--white); }
-
-  /* Image Wrapper */
-  .card-img-wrap {
-    width: 100%; height: 100%;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .card-img-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    filter: grayscale(100%);
-    transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1), filter 0.6s ease;
-    object-position: top;
-  }
-
-  .project-card:hover .card-img-wrap img {
-    filter: grayscale(0%);
-  }
-
-  .card-meta {
-    position: absolute; top: 10px; left: 10px;
-    background: var(--bg);
-    padding: 4px 8px;
-    border: 1px solid var(--border);
-    font-family: 'Space Grotesk', monospace;
-    font-size: 11px; font-weight: 600; text-transform: uppercase;
-    z-index: 10;
-    letter-spacing: 0.05em;
-  }
-
-  /* LIST LAYOUT */
-  .section{ padding: 100px 0; position: relative; z-index: 2; border-top: 1px solid var(--border); }
-  .services { padding: 100px 0; position: relative; z-index: 2; }
-
-  /* SERVICE ROW */
-  .service-row {
-    position: relative;
-    border-top: 1px solid var(--border);
-    padding: 20px 20px 20px 20px;
-    transition: opacity 1s cubic-bezier(0.1, 0.9, 0.2, 1);
-  }
-  .service-row:hover { background-color: rgba(255, 255, 255, 0.03); }
-
-  .service-row::before {
-    content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 1px; background: var(--white);
-    transform: scaleY(0); transition: transform 0.3s; transform-origin: top;
-  }
-  .service-row:hover::before { transform: scaleY(1); }
-
-  .service-row h3 { font-size: 2.5rem; color: var(--text-main); }
-  .service-row p { font-size: 1.2rem; color: var(--text-muted); }
-  .service-icon { font-size: 1.5rem; color: var(--white); opacity: 0.5; margin-right: 1.5rem; }
-
-  /* FOOTER */
-  footer {
-    padding: 100px 0 60px;
-    border-top: 1px solid var(--border);
-    color: var(--text-muted); font-size: 15px;
-  }
-  .social-link { color: var(--text-muted); font-size: 1.2rem; transition: 0.3s; }
-  .social-link:hover { color: var(--white); }
-
-  @media(max-width: 768px) {
-    .hero-statement { font-size: 3rem; }
-    .project-card { flex: 0 0 85vw; min-width: auto; margin-right: 16px; }
-    .service-row h3 { font-size: 2rem; }
-    .reveal { opacity: 1 !important; clip-path: inset(0 0 0 0) !important; }
-    .services { padding: 60px 0; }
-    .service-row { padding: 30px 0 30px 24px; }
-  }
 </style>
 
+</style>
 </head>
 <body>
 
   <div class="math-grid"></div>
 
 <header class="site-header">
-  <div class="ui container">
-    <div class="ui middle aligned unstackable grid">
-      <div class="eight wide column">
-        <div class="brand">
-          <img src="/images/logo.svg" width="50px" alt="Vitro Logo">
-          <div class="brand-dot"></div>
-          <a href="/">VITRO MEDIA LAB</a>
-        </div>
-      </div>
-      <div class="eight wide column right aligned">
-        <nav>
-          <a href="/contact.html" class="nav-link-custom">Contact</a>
-        </nav>
-      </div>
-    </div>
+  <div class="header-inner">
+    
+    <a href="/" class="brand">
+      <img src="/images/logo.svg" class="brand-logo" alt="Vitro Logo">
+      <div class="brand-dot"></div>
+      <span class="brand-text">VITRO MEDIA LAB</span>
+    </a>
+
+    <nav class="site-nav">
+      <a href="/" class="nav-link-custom hide-mobile">Directory</a>
+      <a href="/contact/" class="btn-nav">Start Project</a>
+    </nav>
+    
   </div>
 </header>
 
-
-  <section class="hero">
-  <div class="ui container">
-    <div class="hero-statement">
-      <span class="reveal stagger-1">All <span class="rotator-wrapper"><span id="rotating-text" class="rotating-word">websites</span></span></span><br>
-      <span class="reveal stagger-2">shouldn't look the same.</span>
+  <main class="sys-directory">
+  <div class="container">
+    
+    <div class="directory-header reveal stagger-1">
+      <span class="tech-label reveal stagger-2">Status: Online // Accepting New Projects</span>
+      <h1 class="hero-statement reveal stagger-3">Vitro <br>Media Lab</h1>
+      <div class="hero-sub reveal stagger-4">
+        <div class="hero-line"></div>
+        <p>Bridging technical logic and visual artistry. Select a division below.</p>
+      </div>
     </div>
 
-    <div class="hero-sub reveal stagger-3">
-      <div class="hero-line"></div>
-      <span>Digital architecture for brands requiring distinctiveness.</span>
+    <div class="directory-grid reveal stagger-5">
+      
+      <a href="/lab/" class="dir-card">
+        <div class="card-content">
+          <div class="card-meta">[01] /lab/ <span class="status-badge">B2B</span></div>
+          <h2 class="h2">The Lab</h2>
+          <p>Digital architecture & bespoke creative services for brands requiring distinctiveness.</p>
+        </div>
+        <div class="card-cta">
+          <span>Explore Services</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="/designs/" class="dir-card">
+        <div class="card-content">
+          <div class="card-meta">[02] /designs/ <span class="status-badge">Shop</span></div>
+          <h2 class="h2">The Designs</h2>
+          <p>Minimalist cartography, functional patent prints, and tangible visual art.</p>
+        </div>
+        <div class="card-cta">
+          <span>Shop Prints</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="/print/" class="dir-card">
+        <div class="card-content">
+          <div class="card-meta">[03] /print/ <span class="status-badge">Commissions</span></div>
+          <h2 class="h2">Print Lab</h2>
+          <p>Client print services, high-fidelity photo restoration, and VHS digitization.</p>
+        </div>
+        <div class="card-cta">
+          <span>View Capabilities</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="/live/" class="dir-card">
+        <div class="card-content">
+          <div class="card-meta">[04] /live/</div>
+          <h2 class="h2">Vitro Live</h2>
+          <p>Live design broadcasts, technical build sessions, and creative stewardship.</p>
+        </div>
+        <div class="card-cta">
+          <span>Watch Live</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="/featured/" class="dir-card">
+        <div class="card-content">
+          <div class="card-meta">[05] /featured/</div>
+          <h2 class="h2">Featured Artists</h2>
+          <p>Curated galleries and exclusive print runs from distinct external photographers.</p>
+        </div>
+        <div class="card-cta">
+          <span>View Galleries</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="/engine/" class="dir-card highlight-card">
+        <div class="card-content">
+          <div class="card-meta accent">[06] /engine/ <span class="status-badge outline">Demo</span></div>
+          <h2 class="h2">The Engine</h2>
+          <p>Experimental browser-based 3D city rendering and mapping environment.</p>
+        </div>
+        <div class="card-cta accent-cta">
+          <span>Launch Demo</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
     </div>
   </div>
-</section>
-
-<section class="section">
-  <div class="ui container">
-    <div style="margin-bottom: 2.5rem;">
-      <span class="tech-label reveal stagger-1">Fig 1.0 — Introduction</span>
-      <div class="grid stackable middle aligned reveal stagger-2">
-        <div class="eight wide column">
-          <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Vitro Media Lab</h2>
-        </div>
-      </div>
-    </div>
-    <p class="reveal stagger-3">Vitro Media Lab is a multidisciplinary creative studio based in Lafayette, Indiana. We bridge the gap between technical logic and visual artistry, crafting distinct digital identities for local partners and global visionaries.</p>
-  </div>
-</section>
-
-<section class="scroll-section">
-  <div class="ui container" style="margin-bottom: 2.5rem;">
-    <span class="tech-label reveal stagger-1">Fig 2.0 — Selected Works</span>
-    <div class="ui grid stackable middle aligned reveal stagger-2">
-      <div class="eight wide column">
-        <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Digital Design & Development</h2>
-      </div>
-      <div class="eight wide column right aligned">
-        <a href="work/gibson-wells-audio.html" class="mt-2 mt-md-0" style="font-size: 14px; color: var(--white);">View All <i class="fas fa-arrow-right ms-1"></i></a>
-      </div>
-    </div>
-  </div>
-  <div class="scroll-track">
-
-    <a href="work/gibson-wells-audio.html" class="project-card">
-      <div class="corner-tl"></div><div class="corner-br"></div>
-      <div class="card-img-wrap">
-        <img src="images/Gibson.png" alt="Work">
-        <div class="card-meta">Gibson Wells Audio</div>
-      </div>
-    </a>
-
-    <div class="project-card">
-      <div class="corner-tl"></div><div class="corner-br"></div>
-      <div class="card-img-wrap">
-        <img src="images/MyoFlow.png" alt="Work">
-        <div class="card-meta">MyoFlow Massage</div>
-      </div>
-    </div>
-
-    <div class="project-card">
-      <div class="corner-tl"></div><div class="corner-br"></div>
-      <div class="card-img-wrap">
-        <img src="images/Coffee.png" alt="Work">
-        <div class="card-meta">Ghost Coffee Roaster</div>
-      </div>
-    </div>
-
-    <div class="project-card">
-      <div class="corner-tl"></div><div class="corner-br"></div>
-      <div class="card-img-wrap">
-        <img src="images/Plumbing.png" alt="Work">
-        <div class="card-meta">Big Dog Plumbing</div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section class="scroll-section-no-gradiant">
-  <div class="ui container" style="margin-bottom: 2.5rem;">
-    <span class="tech-label reveal stagger-1">Fig 3.0 — Visuals</span>
-    <div class="ui grid stackable middle aligned reveal stagger-2">
-      <div class="eight wide column">
-        <h2 style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white);">Photography & Videography</h2>
-      </div>
-      <div class="eight wide column right aligned">
-        <a href="work/gibson-wells-audio.html" class="mt-2 mt-md-0" style="font-size: 14px; color: var(--white);">View All <i class="fas fa-arrow-right ms-1"></i></a>
-      </div>
-    </div>
-  </div>
-  <div class="scroll-track">
-
-    <div class="project-card">
-      <div class="corner-tl"></div><div class="corner-br"></div>
-      <div class="card-img-wrap">
-        <img src="images/DSC9206_01.jpg" alt="Work">
-        <div class="card-meta">Event Photography</div>
-      </div>
-    </div>
-
-    <div class="project-card">
-      <div class="corner-tl"></div><div class="corner-br"></div>
-      <div class="card-img-wrap">
-        <img src="images/DSC9695.jpg" alt="Work">
-        <div class="card-meta">Product Photography</div>
-      </div>
-    </div>
-
-    <div class="project-card">
-      <div class="corner-tl"></div><div class="corner-br"></div>
-      <div class="card-img-wrap">
-        <img src="images/DSC05960.jpg" alt="Work">
-        <div class="card-meta">Wedding Photography</div>
-      </div>
-    </div>
-
-    <div class="project-card">
-      <div class="corner-tl"></div><div class="corner-br"></div>
-      <div class="card-img-wrap">
-        <img src="images/DSC_0463_01.jpg" alt="Work">
-        <div class="card-meta">Portraits</div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section class="services">
-  <div class="ui container">
-    <div style="margin-bottom: 4rem;">
-      <span class="tech-label reveal stagger-1">Fig 4.0 — Capabilities</span>
-      <h2 class="reveal stagger-2" style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white); margin-bottom: 2.5rem;">Our Expertise</h2>
-      <p class="reveal stagger-3">We translate visual strategy into technical reality to convert your brand's intent into functional digital assets.</p>
-    </div>
-
-    <div class="service-row reveal stagger-3">
-      <div class="ui middle aligned grid stackable">
-        <div class="five wide column">
-          <h3 class="ui header"><i class="fas fa-code service-icon"></i>Web Development</h3>
-        </div>
-        <div class="eleven wide column">
-          <p>From custom front-end designs to robust back-end systems, we build dynamic and responsive web experiences tailored to your needs.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="service-row reveal stagger-4">
-      <div class="ui middle aligned grid stackable">
-        <div class="five wide column">
-          <h3 class="ui header"><i class="fas fa-pen-nib service-icon"></i>Graphic Design</h3>
-        </div>
-        <div class="eleven wide column">
-          <p>Crafting impactful visual identities, logos, and marketing materials that resonate with your audience and elevate your brand.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="service-row reveal stagger-5">
-      <div class="ui middle aligned grid stackable">
-        <div class="five wide column">
-          <h3 class="ui header"><i class="fas fa-camera service-icon"></i>Photography</h3>
-        </div>
-        <div class="eleven wide column">
-          <p>Capturing life's most precious moments, from stunning wedding and portrait photography to dynamic event coverage.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="service-row reveal stagger-6">
-      <div class="ui middle aligned grid stackable">
-        <div class="five wide column">
-          <h3 class="ui header"><i class="fas fa-video service-icon"></i>Videography</h3>
-        </div>
-        <div class="eleven wide column">
-          <p>Bringing your stories to life with compelling visual narratives, from concept development to final production.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="service-row reveal stagger-7">
-      <div class="ui middle aligned grid stackable">
-        <div class="five wide column">
-          <h3 class="ui header"><i class="fas fa-book service-icon"></i>Content Creation</h3>
-        </div>
-        <div class="eleven wide column">
-          <p>Engineering your brand's voice through creative stewardship, crafting social media narratives and optimizing search engine visibility (SEO) to convert concepts into digital assets.</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
+</main>
 
   <footer>
-  <div class="ui container">
-    <div class="ui grid stackable mb-5 reveal stagger-1">
-      <div class="twelve wide column reveal stagger-2">
+  <div class="container">
+    
+    <div class="footer-cta reveal stagger-1">
+      <div class="cta-text reveal stagger-2">
         <span class="tech-label">Fig 5.0 — Contact</span>
-        <h2 style="font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--text-main); margin-bottom: 20px;">Let's build your<br>digital identity.</h2>
+        <h2 class="footer-heading">Let's build your<br>digital identity.</h2>
       </div>
-      <div class="four wide column right aligned middle aligned">
-        <a href="/contact.html" class="ui button inverted basic" style="font-weight: 600; border-radius: 0;">Start a Project</a>
+      <div class="cta-action reveal stagger-3">
+        
+        <a href="/contact/" class="btn-primary">Start a Project</a>
+        
       </div>
     </div>
 
-    <div class="ui grid align-items-center pt-4" style="border-top: 1px solid rgba(255,255,255,0.1);">
-      <div class="eight wide column mb-3 mb-md-0">
+    <div class="footer-bottom">
+      <div class="copyright">
         &copy; <script>document.write(new Date().getFullYear())</script> Vitro Media Lab
       </div>
-      <div class="eight wide column right aligned">
-        <a href="https://www.instagram.com/vitromedialab/" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fab fa-instagram"></i></a>
-        <a href="mailto:hello@vitromedialab.com" target="_blank" class="social-link" style="margin-left: 1.5rem;"><i class="fas fa-envelope"></i></a>
+      <div class="socials">
+        <a href="https://www.facebook.com/vitromedialab" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/vitromedialab/" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="mailto:hello@vitromedialab.com" target="_blank" class="social-link"><i class="fas fa-envelope"></i></a>
       </div>
     </div>
+
   </div>
 </footer>
 
@@ -558,8 +652,21 @@
       observer.observe(el);
     }
   });
-</script>
 
+  /* DYNAMIC FIGURE NUMBER */
+  const sections = document.querySelectorAll('section');
+  const directoryHeaders = document.querySelectorAll('div.directory-header');
+  const directoryGrids = document.querySelectorAll('div.directory-grid');
+  const sectionCount = sections.length + directoryHeaders.length + directoryGrids.length;
+  const footerLabel = document.querySelector('footer .tech-label');
+  if (footerLabel) {
+    const currentText = footerLabel.textContent;
+    // Match "Fig X.0 — Something" pattern
+    const match = currentText.match(/^Fig \d+\.0 — (.+)$/);
+    const suffix = match ? match[1] : 'Contact';
+    footerLabel.textContent = `Fig ${sectionCount}.0 — ${suffix}`;
+  }
+</script>
 
 </body>
 </html>

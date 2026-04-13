@@ -1,0 +1,16 @@
+<!-- Project Card Component -->
+{% if include.href %}
+<a href="{{ include.href }}" target="_blank" class="project-card">
+{% else %}
+<div class="project-card">
+{% endif %}
+  <div class="corner-tl"></div><div class="corner-br"></div>
+  <div class="card-img-wrap">
+    <img src="{{ include.image_src }}" alt="{{ include.image_alt | default: 'Work' }}">
+    <div class="card-meta">{{ include.meta }}</div>
+  </div>
+{% if include.href %}
+</a>
+{% else %}
+</div>
+{% endif %}

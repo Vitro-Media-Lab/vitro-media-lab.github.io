@@ -1,0 +1,40 @@
+<!-- Photographers Grid Template -->
+<!-- Renders all photographers from the _photographers collection -->
+
+{% assign photographers = site.photographers | sort: "title" %}
+
+{% if photographers.size < 0 %}
+<section class="section">
+  <div class="container">
+    <span class="tech-label reveal stagger-1">Fig 1.0 — Featured Photographers</span>
+    <h2 class="reveal stagger-2" style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white); margin-bottom: 4rem;">Curated Visual Artists</h2>
+      
+    <div class="directory-grid">
+      {% for photographer in photographers %}
+      <a href="{{ photographer.url }}" class="dir-card photographer-card reveal stagger-{{ forloop.index | plus: 2 }}">
+        <div class="card-content">
+          <div class="card-meta">
+            <span class="photographer-specialty">{{ photographer.specialty }}</span>
+            <span class="status-badge outline">{{ photographer.location }}</span>
+          </div>
+          <h2>{{ photographer.title }}</h2>
+          <p>{{ photographer.content | strip_html | truncatewords: 20 }}</p>
+        </div>
+        <!-- <div class="card-cta">
+          <span>View Portfolio</span>
+          <span class="arrow">→</span>
+        </div> -->
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% else %}
+<section class="section">
+  <div class="container">
+    <span class="tech-label reveal stagger-1">Fig 2.0 — Coming Soon</span>
+    <h2 class="reveal stagger-2" style="font-size: 3rem; letter-spacing: -0.02em; color: var(--white); margin-bottom: 4rem;">Photographers Coming Soon</h2>
+    <p class="reveal stagger-3">We're curating our featured photographers list. Check back soon for talented visual artists.</p>
+  </div>
+</section>
+{% endif %}

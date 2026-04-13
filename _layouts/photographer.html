@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% include head.html %}
+  <style>
+    :root {
+      --accent-color: var(--orange);
+    }
+  </style>
+</head>
+<body class="photographer-page">
+
+  {% include header.html %}
+
+  <main class="photographer-container" style="padding-top: 50px;">
+    <section class="section">
+      <div class="container">
+        {{ content }}
+      </div>
+    </section>
+  </main>
+
+  {% include footer.html %}
+
+</body>
+</html>
