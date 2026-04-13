@@ -7,11 +7,56 @@ import * as Core from './engine-core.js';
 import { PlayerState, updatePlayerPhysics } from './player.js';
 
 // ============================================================================
+// HARDWARE GATEWAY
+// ============================================================================
+
+function isMobileDevice() {
+    return window.matchMedia("(any-pointer: coarse)").matches || window.innerWidth < 768;
+}
+
+function hasInsufficientRAM() {
+    if (!('deviceMemory' in navigator)) return false;
+    return navigator.deviceMemory < 8;
+}
+
+// ============================================================================
 // STARTUP
 // ============================================================================
 
 async function start() {
     try {
+        // --- 1. HARDWARE KILL SWITCH ---
+        const isMobile = isMobileDevice();
+        const lowRAM = hasInsufficientRAM();
+
+        if (isMobile || lowRAM) {
+            console.warn(`[Vitro Engine] Execution halted. Mobile: ${isMobile} | Low RAM: ${lowRAM}`);
+            
+            let reasonText = isMobile 
+                ? "Please visit on a desktop or laptop computer to explore the map."
+                : "Your device is reporting less than 8GB of RAM, which is required to process the map data.";
+
+            const container = document.getElementById('three-canvas');
+            if (container) {
+                container.innerHTML = `
+                    <div style="width: 100%; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0e0e0e; color: #ffffff; font-family: 'Montserrat', sans-serif; text-align: center; padding: 20px; box-sizing: border-box;">
+                        <h2 style="letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase;">Vitro Omni-Engine</h2>
+                        <p style="color: #888; max-width: 400px; line-height: 1.6; font-size: 14px;">
+                            This procedural 3D environment requires desktop-class memory and GPU resources.<br><br>
+                            ${reasonText}
+                        </p>
+                    </div>
+                `;
+            }
+            
+            // Kill the loading UI so the message is actually visible
+            const loader = document.getElementById('vitro-loader');
+            if (loader) loader.remove();
+            
+            return; // ABORT STARTUP
+        }
+
+        // --- 2. ENGINE INITIALIZATION ---
         const response = await fetch('./metadata.json?v=' + Date.now());
         const meta     = await response.json();
 
@@ -310,18 +355,6 @@ function setupEventListeners() {
 
     // --- Shutdown ---
     window.addEventListener('beforeunload', () => Core.shutdown());
-
-    // --- Spacebar Auto-Rotate Toggle ---
-    // window.addEventListener('keydown', (e) => {
-    //     // Trigger only on Spacebar, and ensure we aren't typing inside a text input
-    //     if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
-    //         e.preventDefault(); // Prevent the browser from scrolling down
-    //         const btnSpin = document.getElementById('btnAutoSpin');
-    //         if (btnSpin) {
-    //             btnSpin.click(); // Reuses your existing toggle logic perfectly
-    //         }
-    //     }
-    // });
 }
 
 start();
